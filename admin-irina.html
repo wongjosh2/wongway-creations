@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Irina's Upload — Wongway Creations</title>
+    <title>Irina's Studio — Wongway Creations</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,6 +15,7 @@
             --dark: #1c1a18;
             --mid: #6e6560;
             --accent: #8b7355;
+            --red: #c0392b;
         }
         body {
             background: var(--warm-white);
@@ -23,60 +25,45 @@
             display: flex;
             flex-direction: column;
         }
+
+        /* NAV */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 22px 32px;
+            padding: 20px 28px;
             border-bottom: 1px solid rgba(0,0,0,0.07);
+            position: sticky;
+            top: 0;
+            background: var(--warm-white);
+            z-index: 50;
         }
         .logo {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             text-decoration: none;
             color: var(--dark);
         }
-        .nav-link {
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--mid);
-            text-decoration: none;
-        }
-        .screen {
-            display: none;
-            flex: 1;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 24px;
-        }
+        .nav-link { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); text-decoration: none; }
+
+        /* SCREENS */
+        .screen { display: none; flex: 1; justify-content: center; align-items: center; padding: 36px 20px; }
         .screen.active { display: flex; }
 
         /* PASSWORD */
         .card {
             background: var(--beige);
-            padding: 52px 40px;
-            max-width: 400px;
+            padding: 48px 36px;
+            max-width: 380px;
             width: 100%;
             text-align: center;
         }
-        .eyebrow {
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 14px;
-        }
-        h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
-            font-weight: 300;
-            margin-bottom: 28px;
-        }
-        .error-msg { color: #c0392b; font-size: 13px; margin-bottom: 14px; display: none; }
+        .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+        h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; margin-bottom: 26px; }
+        .error-msg { color: var(--red); font-size: 13px; margin-bottom: 12px; display: none; }
 
         /* INPUTS */
         input[type="password"], input[type="text"], textarea {
@@ -89,18 +76,19 @@
             font-weight: 300;
             color: var(--dark);
             outline: none;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border-radius: 0;
             -webkit-appearance: none;
         }
         input:focus, textarea:focus { border-color: var(--accent); }
-        textarea { resize: vertical; min-height: 120px; }
+        textarea { resize: vertical; min-height: 100px; }
+        .field-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; display: block; }
 
         /* BUTTONS */
         .btn {
             display: block;
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             background: var(--dark);
             color: white;
             border: none;
@@ -115,21 +103,62 @@
         }
         .btn:hover { opacity: 0.8; }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-outline {
+        .btn-outline { background: transparent; color: var(--dark); border: 1px solid var(--dark); margin-top: 10px; }
+        .btn-sm {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.2);
             background: transparent;
+            font-family: 'Inter', sans-serif;
             color: var(--dark);
-            border: 1px solid var(--dark);
-            margin-top: 12px;
+            transition: all 0.2s;
         }
+        .btn-sm:hover { background: var(--dark); color: white; border-color: var(--dark); }
+        .btn-danger { border-color: var(--red); color: var(--red); }
+        .btn-danger:hover { background: var(--red); color: white; border-color: var(--red); }
 
-        /* UPLOAD FORM */
-        .upload-box { max-width: 500px; width: 100%; }
-        .upload-box h1 { text-align: left; margin-bottom: 6px; }
-        .subtitle { font-size: 14px; color: var(--mid); margin-bottom: 32px; }
+        /* MAIN SCREEN */
+        #mainScreen { align-items: flex-start; padding: 0; flex-direction: column; }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            width: 100%;
+            padding: 0 28px;
+        }
+        .tab {
+            padding: 16px 0;
+            margin-right: 32px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--mid);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+        }
+        .tab.active { color: var(--dark); border-bottom-color: var(--dark); }
+
+        /* PANELS */
+        .panel { display: none; width: 100%; max-width: 520px; margin: 0 auto; padding: 36px 20px 60px; }
+        .panel.active { display: block; }
+        .panel-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 6px; }
+        .panel-sub { font-size: 13px; color: var(--mid); margin-bottom: 28px; }
 
         /* PHOTO PICKER */
         .photo-picker {
-            border: 2px dashed rgba(0,0,0,0.15);
+            border: 2px dashed rgba(0,0,0,0.14);
             background: var(--beige);
             aspect-ratio: 4/3;
             display: flex;
@@ -137,7 +166,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             position: relative;
             overflow: hidden;
             transition: border-color 0.2s;
@@ -145,87 +174,155 @@
         .photo-picker:hover { border-color: var(--accent); }
         .photo-picker.has-photo { border-style: solid; border-color: transparent; }
         .photo-picker input[type="file"] {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            border: none;
+            position: absolute; inset: 0; opacity: 0; cursor: pointer;
+            width: 100%; height: 100%; margin: 0; padding: 0; border: none;
         }
-        #photoPreview {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
-        }
+        #photoPreview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
         .picker-label { text-align: center; pointer-events: none; }
-        .picker-icon { font-size: 48px; margin-bottom: 12px; }
+        .picker-icon { font-size: 44px; margin-bottom: 10px; }
         .picker-label p { font-size: 15px; color: var(--mid); margin-bottom: 4px; }
         .picker-label small { font-size: 12px; color: var(--mid); opacity: 0.6; }
         .change-btn {
             display: none;
-            position: absolute;
-            bottom: 14px;
-            right: 14px;
-            background: rgba(255,255,255,0.92);
-            padding: 8px 18px;
-            font-size: 12px;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            z-index: 10;
+            position: absolute; bottom: 12px; right: 12px;
+            background: rgba(255,255,255,0.92); padding: 7px 16px;
+            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+            cursor: pointer; border: none; font-family: 'Inter', sans-serif; z-index: 10;
         }
         .photo-picker.has-photo .change-btn { display: block; }
         .photo-picker.has-photo .picker-label { display: none; }
 
-        /* SUCCESS */
-        .success-box { text-align: center; max-width: 360px; }
-        .success-icon { font-size: 56px; margin-bottom: 20px; }
-        .success-box h1 { margin-bottom: 12px; }
-        .success-box p { font-size: 15px; color: var(--mid); margin-bottom: 32px; line-height: 1.7; }
+        /* MANAGE LIST */
+        .save-order-bar {
+            display: none;
+            background: var(--beige);
+            padding: 14px 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .save-order-bar p { font-size: 13px; color: var(--mid); margin-bottom: 10px; }
 
-        /* LOADING */
-        .loading-overlay {
+        .manage-list { display: flex; flex-direction: column; gap: 12px; }
+        .manage-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--beige);
+            padding: 12px;
+            cursor: default;
+        }
+        .drag-handle {
+            font-size: 20px;
+            color: var(--mid);
+            cursor: grab;
+            padding: 0 4px;
+            flex-shrink: 0;
+            user-select: none;
+        }
+        .drag-handle:active { cursor: grabbing; }
+        .manage-thumb {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .manage-info { flex: 1; min-width: 0; }
+        .manage-title-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .manage-desc-text { font-size: 12px; color: var(--mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .manage-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .manage-empty { text-align: center; padding: 48px 0; color: var(--mid); font-size: 14px; }
+
+        /* EDIT MODAL */
+        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(250,247,242,0.93);
+            background: rgba(28,26,24,0.5);
+            z-index: 300;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            z-index: 200;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--warm-white);
+            width: 100%;
+            max-width: 460px;
+            padding: 36px 28px 28px;
+        }
+        .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 20px; }
+        .modal-thumb { width: 100%; height: 180px; object-fit: cover; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
+        .modal-actions .btn { margin: 0; }
+
+        /* SUCCESS */
+        .success-box { text-align: center; max-width: 340px; }
+        .success-icon { font-size: 52px; margin-bottom: 18px; }
+        .success-box h1 { margin-bottom: 10px; }
+        .success-box p { font-size: 14px; color: var(--mid); margin-bottom: 28px; line-height: 1.7; }
+
+        /* LOADING */
+        .loading-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(250,247,242,0.93);
+            justify-content: center; align-items: center;
+            flex-direction: column; z-index: 200;
         }
         .loading-overlay.active { display: flex; }
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 38px; height: 38px;
             border: 2px solid rgba(0,0,0,0.1);
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+        }
+        .spinner-sm {
+            width: 24px; height: 24px;
+            border: 2px solid rgba(0,0,0,0.08);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 24px auto;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-overlay p { font-size: 14px; color: var(--mid); letter-spacing: 0.05em; }
+        .loading-overlay p { font-size: 14px; color: var(--mid); }
     </style>
 </head>
 <body>
 
     <nav>
         <a href="/" class="logo">Wongway Creations</a>
-        <a href="irina.html" class="nav-link">← Irina's Gallery</a>
+        <a href="irina.html" class="nav-link">← My Gallery</a>
     </nav>
 
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
         <p>Uploading your photo...</p>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <h2>Edit Piece</h2>
+            <img id="editThumb" class="modal-thumb" src="" alt="">
+            <label class="field-label">Title</label>
+            <input type="text" id="editTitle" placeholder="Title" maxlength="80">
+            <label class="field-label">Description</label>
+            <textarea id="editDesc" placeholder="Description"></textarea>
+            <div class="modal-actions">
+                <button class="btn" onclick="saveEdit()">Save</button>
+                <button class="btn btn-outline" onclick="closeModal()" style="width:auto; padding:16px 24px;">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <!-- PASSWORD -->
@@ -239,27 +336,54 @@
         </div>
     </div>
 
-    <!-- UPLOAD -->
-    <div class="screen" id="uploadScreen">
-        <div class="upload-box">
-            <h1>Add a New Piece</h1>
-            <p class="subtitle">Share your latest handbuilt work.</p>
+    <!-- MAIN (tabs) -->
+    <div class="screen" id="mainScreen">
+
+        <div class="tabs" style="flex-shrink:0;">
+            <button class="tab active" onclick="switchTab('upload')">Add Piece</button>
+            <button class="tab" onclick="switchTab('manage')" id="manageTab">Manage Pieces</button>
+        </div>
+
+        <!-- UPLOAD PANEL -->
+        <div class="panel active" id="uploadPanel">
+            <p class="panel-title">Add a New Piece</p>
+            <p class="panel-sub">Share your latest handbuilt work.</p>
 
             <div class="photo-picker" id="photoPicker">
                 <input type="file" id="fileInput" accept="image/*" onchange="previewPhoto(event)">
-                <img id="photoPreview" alt="Preview">
+                <img id="photoPreview" alt="">
                 <div class="picker-label">
                     <div class="picker-icon">📷</div>
                     <p>Tap to choose a photo</p>
-                    <small>From your camera roll</small>
+                    <small>Camera roll or take a new photo</small>
                 </div>
                 <button class="change-btn" onclick="changePhoto(event)">Change Photo</button>
             </div>
 
-            <input type="text" id="titleInput" placeholder="Title  (e.g. Pinch Pot with Sage Glaze)" maxlength="80">
-            <textarea id="descInput" placeholder="Write about this piece — what inspired it, how you made it, what makes it special to you."></textarea>
+            <label class="field-label">Title <span style="opacity:0.5">(optional)</span></label>
+            <input type="text" id="titleInput" placeholder="e.g. Pinch Pot with Sage Glaze" maxlength="80">
+
+            <label class="field-label">Description <span style="opacity:0.5">(optional)</span></label>
+            <textarea id="descInput" placeholder="Write about this piece — what inspired it, how you made it..."></textarea>
+
             <button class="btn" id="submitBtn" onclick="submitPost()">Post to Gallery</button>
         </div>
+
+        <!-- MANAGE PANEL -->
+        <div class="panel" id="managePanel">
+            <p class="panel-title">Manage Pieces</p>
+            <p class="panel-sub">Drag to reorder. Edit or delete any piece.</p>
+
+            <div class="save-order-bar" id="saveOrderBar">
+                <p>You've changed the order.</p>
+                <button class="btn" onclick="saveOrder()" style="width:auto; display:inline-block; padding:12px 32px;">Save New Order</button>
+            </div>
+
+            <div class="manage-list" id="manageList">
+                <div class="spinner-sm"></div>
+            </div>
+        </div>
+
     </div>
 
     <!-- SUCCESS -->
@@ -267,7 +391,7 @@
         <div class="success-box">
             <div class="success-icon">✓</div>
             <h1>Posted!</h1>
-            <p>Your piece is live on your gallery page for everyone to see.</p>
+            <p>Your piece is live on your gallery page.</p>
             <a href="irina.html" class="btn">View My Gallery</a>
             <button class="btn btn-outline" onclick="addAnother()">Add Another Piece</button>
         </div>
@@ -283,20 +407,46 @@
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let selectedFile = null;
+        let editingId = null;
+        let sortable = null;
+        let orderChanged = false;
 
+        function esc(str) {
+            return String(str || '')
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        // PASSWORD
         document.getElementById('passwordInput').addEventListener('keydown', e => {
             if (e.key === 'Enter') checkPassword();
         });
 
         function checkPassword() {
             if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-                showScreen('uploadScreen');
+                showScreen('mainScreen');
+                loadManage();
             } else {
                 document.getElementById('passwordError').style.display = 'block';
                 document.getElementById('passwordInput').value = '';
             }
         }
 
+        // TABS
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            if (tab === 'upload') {
+                document.querySelectorAll('.tab')[0].classList.add('active');
+                document.getElementById('uploadPanel').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab')[1].classList.add('active');
+                document.getElementById('managePanel').classList.add('active');
+                loadManage();
+            }
+        }
+
+        // PHOTO PICKER
         function previewPhoto(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -312,6 +462,7 @@
             document.getElementById('fileInput').click();
         }
 
+        // COMPRESS
         function compressImage(file) {
             return new Promise(resolve => {
                 const img = new Image();
@@ -329,11 +480,12 @@
             });
         }
 
+        // UPLOAD
         async function submitPost() {
+            if (!selectedFile) { alert('Please choose a photo first.'); return; }
+
             const title = document.getElementById('titleInput').value.trim();
             const description = document.getElementById('descInput').value.trim();
-            if (!selectedFile) { alert('Please choose a photo first.'); return; }
-            if (!title) { alert('Please add a title.'); return; }
 
             document.getElementById('loadingOverlay').classList.add('active');
             document.getElementById('submitBtn').disabled = true;
@@ -349,8 +501,13 @@
 
                 const { data: urlData } = sb.storage.from('photos').getPublicUrl(uploadData.path);
 
-                const { error: insertErr } = await sb.from('posts')
-                    .insert({ artist: ARTIST, title, description, image_url: urlData.publicUrl });
+                const { error: insertErr } = await sb.from('posts').insert({
+                    artist: ARTIST,
+                    title: title || '',
+                    description: description || '',
+                    image_url: urlData.publicUrl,
+                    order_index: 0
+                });
                 if (insertErr) throw insertErr;
 
                 document.getElementById('loadingOverlay').classList.remove('active');
@@ -358,10 +515,119 @@
             } catch (err) {
                 document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('submitBtn').disabled = false;
-                alert('Something went wrong. Please try again.\n\n' + err.message);
+                alert('Something went wrong uploading.\n\n' + err.message);
             }
         }
 
+        // MANAGE — LOAD
+        async function loadManage() {
+            const list = document.getElementById('manageList');
+            list.innerHTML = '<div class="spinner-sm"></div>';
+            orderChanged = false;
+            document.getElementById('saveOrderBar').style.display = 'none';
+
+            try {
+                const { data: posts, error } = await sb.from('posts')
+                    .select('*')
+                    .eq('artist', ARTIST)
+                    .order('order_index', { ascending: true });
+                if (error) throw error;
+
+                if (!posts || posts.length === 0) {
+                    list.innerHTML = '<div class="manage-empty">No pieces yet. Add one from the Upload tab.</div>';
+                    return;
+                }
+
+                list.innerHTML = posts.map(p => `
+                    <div class="manage-card" data-id="${esc(p.id)}" data-url="${esc(p.image_url)}">
+                        <span class="drag-handle" title="Drag to reorder">⠿</span>
+                        <img class="manage-thumb" src="${esc(p.image_url)}" alt="${esc(p.title)}">
+                        <div class="manage-info">
+                            <div class="manage-title-text">${esc(p.title) || '<em style="opacity:0.5">Untitled</em>'}</div>
+                            <div class="manage-desc-text">${esc(p.description) || ''}</div>
+                            <div class="manage-actions">
+                                <button class="btn-sm" onclick="openEdit('${esc(p.id)}', '${esc(p.image_url)}', ${JSON.stringify(p.title||'')}, ${JSON.stringify(p.description||'')})">Edit</button>
+                                <button class="btn-sm btn-danger" onclick="deletePost('${esc(p.id)}', '${esc(p.image_url)}')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                if (sortable) sortable.destroy();
+                sortable = new Sortable(list, {
+                    animation: 180,
+                    handle: '.drag-handle',
+                    onEnd: () => {
+                        orderChanged = true;
+                        document.getElementById('saveOrderBar').style.display = 'block';
+                    }
+                });
+
+            } catch (err) {
+                list.innerHTML = '<div class="manage-empty">Could not load pieces.</div>';
+            }
+        }
+
+        // MANAGE — SAVE ORDER
+        async function saveOrder() {
+            const cards = document.querySelectorAll('.manage-card');
+            const btn = document.querySelector('#saveOrderBar .btn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            const updates = Array.from(cards).map((card, i) => ({ id: card.dataset.id, order_index: i }));
+            for (const u of updates) {
+                await sb.from('posts').update({ order_index: u.order_index }).eq('id', u.id);
+            }
+
+            document.getElementById('saveOrderBar').style.display = 'none';
+            btn.disabled = false;
+            btn.textContent = 'Save New Order';
+            orderChanged = false;
+        }
+
+        // MANAGE — EDIT
+        function openEdit(id, imageUrl, title, description) {
+            editingId = id;
+            document.getElementById('editThumb').src = imageUrl;
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editDesc').value = description;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+            editingId = null;
+        }
+
+        async function saveEdit() {
+            const title = document.getElementById('editTitle').value.trim();
+            const description = document.getElementById('editDesc').value.trim();
+
+            const { error } = await sb.from('posts')
+                .update({ title, description })
+                .eq('id', editingId);
+
+            if (error) { alert('Could not save. Try again.'); return; }
+            closeModal();
+            loadManage();
+        }
+
+        // MANAGE — DELETE
+        async function deletePost(id, imageUrl) {
+            if (!confirm('Delete this piece? This cannot be undone.')) return;
+
+            try {
+                const path = imageUrl.split('/photos/')[1];
+                if (path) await sb.storage.from('photos').remove([path]);
+                await sb.from('posts').delete().eq('id', id);
+                loadManage();
+            } catch (err) {
+                alert('Could not delete. Try again.\n\n' + err.message);
+            }
+        }
+
+        // SUCCESS
         function addAnother() {
             selectedFile = null;
             document.getElementById('fileInput').value = '';
@@ -370,7 +636,8 @@
             document.getElementById('titleInput').value = '';
             document.getElementById('descInput').value = '';
             document.getElementById('submitBtn').disabled = false;
-            showScreen('uploadScreen');
+            showScreen('mainScreen');
+            switchTab('upload');
         }
 
         function showScreen(id) {
