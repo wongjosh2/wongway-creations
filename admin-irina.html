@@ -160,7 +160,8 @@
         .photo-picker {
             border: 2px dashed rgba(0,0,0,0.14);
             background: var(--beige);
-            aspect-ratio: 4/3;
+            aspect-ratio: 3/4;
+            max-height: 65vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -170,14 +171,17 @@
             position: relative;
             overflow: hidden;
             transition: border-color 0.2s;
+            touch-action: none;
+            user-select: none;
         }
         .photo-picker:hover { border-color: var(--accent); }
-        .photo-picker.has-photo { border-style: solid; border-color: transparent; }
+        .photo-picker.has-photo { border-style: solid; border-color: transparent; cursor: move; }
         .photo-picker input[type="file"] {
             position: absolute; inset: 0; opacity: 0; cursor: pointer;
             width: 100%; height: 100%; margin: 0; padding: 0; border: none;
         }
-        #photoPreview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+        .photo-picker.has-photo input[type="file"] { pointer-events: none; }
+        #photoPreview { position: absolute; display: none; }
         .picker-label { text-align: center; pointer-events: none; }
         .picker-icon { font-size: 44px; margin-bottom: 10px; }
         .picker-label p { font-size: 15px; color: var(--mid); margin-bottom: 4px; }
@@ -191,6 +195,14 @@
         }
         .photo-picker.has-photo .change-btn { display: block; }
         .photo-picker.has-photo .picker-label { display: none; }
+        .crop-hint {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.45); color: white;
+            font-size: 12px; letter-spacing: 0.04em;
+            padding: 8px 12px; text-align: center; pointer-events: none;
+            display: none; z-index: 5;
+        }
+        .photo-picker.has-photo .crop-hint { display: block; }
 
         /* MANAGE LIST */
         .save-order-bar {
@@ -378,6 +390,7 @@
                     <p>Tap to choose a photo</p>
                     <small>Camera roll or take a new photo</small>
                 </div>
+                <div class="crop-hint">Drag to reposition · tap Change to swap photo</div>
                 <button class="change-btn" onclick="changePhoto(event)">Change Photo</button>
             </div>
 
@@ -435,6 +448,8 @@
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let selectedFile = null;
+        let cropX = 0, cropY = 0, imgScale = 1;
+        let isDragging = false, dragStartX = 0, dragStartY = 0;
         let editingId = null;
         let sortable = null;
         let orderChanged = false;
@@ -479,15 +494,102 @@
             const file = e.target.files[0];
             if (!file) return;
             selectedFile = file;
-            const preview = document.getElementById('photoPreview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
+            cropX = 0; cropY = 0;
+            const img = document.getElementById('photoPreview');
+            img.onload = setupCrop;
+            img.src = URL.createObjectURL(file);
+            img.style.display = 'block';
             document.getElementById('photoPicker').classList.add('has-photo');
+        }
+
+        function setupCrop() {
+            const img = document.getElementById('photoPreview');
+            const picker = document.getElementById('photoPicker');
+            const cW = picker.offsetWidth;
+            const cH = picker.offsetHeight;
+            imgScale = Math.max(cW / img.naturalWidth, cH / img.naturalHeight);
+            const sW = Math.round(img.naturalWidth * imgScale);
+            const sH = Math.round(img.naturalHeight * imgScale);
+            img.style.width = sW + 'px';
+            img.style.height = sH + 'px';
+            img.style.left = Math.round((cW - sW) / 2) + 'px';
+            img.style.top = Math.round((cH - sH) / 2) + 'px';
+            img.style.transform = 'translate(0px, 0px)';
+        }
+
+        function applyDrag(dx, dy) {
+            const img = document.getElementById('photoPreview');
+            const picker = document.getElementById('photoPicker');
+            const maxX = Math.max(0, (parseFloat(img.style.width) - picker.offsetWidth) / 2);
+            const maxY = Math.max(0, (parseFloat(img.style.height) - picker.offsetHeight) / 2);
+            cropX = Math.max(-maxX, Math.min(maxX, dx));
+            cropY = Math.max(-maxY, Math.min(maxY, dy));
+            img.style.transform = `translate(${cropX}px, ${cropY}px)`;
         }
 
         function changePhoto(e) {
             e.stopPropagation();
             document.getElementById('fileInput').click();
+        }
+
+        // Drag — mouse
+        document.getElementById('photoPicker').addEventListener('mousedown', e => {
+            if (!document.getElementById('photoPicker').classList.contains('has-photo')) return;
+            if (e.target.closest('.change-btn')) return;
+            isDragging = true;
+            dragStartX = e.clientX - cropX;
+            dragStartY = e.clientY - cropY;
+            e.preventDefault();
+        });
+        window.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            applyDrag(e.clientX - dragStartX, e.clientY - dragStartY);
+        });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        // Drag — touch
+        document.getElementById('photoPicker').addEventListener('touchstart', e => {
+            if (!document.getElementById('photoPicker').classList.contains('has-photo')) return;
+            if (e.target.closest('.change-btn')) return;
+            isDragging = true;
+            dragStartX = e.touches[0].clientX - cropX;
+            dragStartY = e.touches[0].clientY - cropY;
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            applyDrag(e.touches[0].clientX - dragStartX, e.touches[0].clientY - dragStartY);
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchend', () => { isDragging = false; });
+
+        function getCroppedBlob() {
+            return new Promise(resolve => {
+                const picker = document.getElementById('photoPicker');
+                const img = document.getElementById('photoPreview');
+                const cW = picker.offsetWidth;
+                const cH = picker.offsetHeight;
+                const sW = parseFloat(img.style.width) || cW;
+                const sH = parseFloat(img.style.height) || cH;
+                const imgLeft = (cW - sW) / 2 + cropX;
+                const imgTop  = (cH - sH) / 2 + cropY;
+                const srcX = -imgLeft / imgScale;
+                const srcY = -imgTop  / imgScale;
+                const srcW = cW / imgScale;
+                const srcH = cH / imgScale;
+                const canvas = document.createElement('canvas');
+                canvas.width = 1200; canvas.height = 1600;
+                try {
+                    canvas.getContext('2d').drawImage(img, srcX, srcY, srcW, srcH, 0, 0, 1200, 1600);
+                    const dataURL = canvas.toDataURL('image/jpeg', 0.88);
+                    if (dataURL && dataURL.length > 200) {
+                        const bstr = atob(dataURL.split(',')[1]);
+                        const u8 = new Uint8Array(bstr.length);
+                        for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+                        resolve(new Blob([u8], { type: 'image/jpeg' }));
+                    } else { resolve(null); }
+                } catch(e) { resolve(null); }
+            });
         }
 
         function showError(step, message) {
@@ -508,9 +610,13 @@
             document.getElementById('submitBtn').disabled = true;
 
             try {
+                // Crop to frame, fall back to original if canvas unavailable
+                let uploadFile = await getCroppedBlob();
+                if (!uploadFile) uploadFile = selectedFile;
+
                 // Upload to Cloudinary
                 const formData = new FormData();
-                formData.append('file', selectedFile);
+                formData.append('file', uploadFile, 'photo.jpg');
                 formData.append('upload_preset', CLOUDINARY_PRESET);
 
                 let cloudRes;
@@ -578,7 +684,7 @@
                             <div class="manage-desc-text">${esc(p.description) || ''}</div>
                             <div class="manage-actions">
                                 <button class="btn-sm" onclick="openEdit('${esc(p.id)}', '${esc(p.image_url)}', ${JSON.stringify(p.title||'')}, ${JSON.stringify(p.description||'')})">Edit</button>
-                                <button class="btn-sm btn-danger" onclick="deletePost('${esc(p.id)}', '${esc(p.image_url)}')">Delete</button>
+                                <button class="btn-sm btn-danger" onclick="deletePost('${esc(p.id)}')">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -659,8 +765,13 @@
         // SUCCESS
         function addAnother() {
             selectedFile = null;
+            cropX = 0; cropY = 0;
             document.getElementById('fileInput').value = '';
-            document.getElementById('photoPreview').style.display = 'none';
+            const prev = document.getElementById('photoPreview');
+            prev.style.display = 'none';
+            prev.style.transform = '';
+            prev.style.width = '';
+            prev.style.height = '';
             document.getElementById('photoPicker').classList.remove('has-photo');
             document.getElementById('titleInput').value = '';
             document.getElementById('descInput').value = '';
