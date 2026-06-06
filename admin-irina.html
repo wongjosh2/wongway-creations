@@ -506,22 +506,39 @@
             document.getElementById('submitBtn').disabled = true;
 
             try {
-                // Upload original file directly — no compression
                 const ext = selectedFile.name.split('.').pop() || 'jpg';
                 const fileName = `${ARTIST}-${Date.now()}.${ext}`;
+                const uploadUrl = `${SUPABASE_URL}/storage/v1/object/Photos/${fileName}`;
 
-                const { data: uploadData, error: uploadErr } = await sb.storage
-                    .from('Photos')
-                    .upload(fileName, selectedFile, { contentType: selectedFile.type });
-                if (uploadErr) throw { step: 'Step 1 — Uploading photo', message: uploadErr.message };
+                // Direct fetch so we get the real error instead of "load failed"
+                let uploadResponse;
+                try {
+                    uploadResponse = await fetch(uploadUrl, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': selectedFile.type || 'image/jpeg',
+                            'x-upsert': 'false'
+                        },
+                        body: selectedFile
+                    });
+                } catch (netErr) {
+                    throw { step: 'Network error — could not reach Supabase', message: netErr.message + ' — Go to Supabase → Settings → API → CORS and make sure Allowed Origins is set to *' };
+                }
 
-                const { data: urlData } = sb.storage.from('Photos').getPublicUrl(uploadData.path);
+                if (!uploadResponse.ok) {
+                    const body = await uploadResponse.text();
+                    throw { step: `Upload rejected — HTTP ${uploadResponse.status}`, message: body };
+                }
+
+                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/Photos/${fileName}`;
 
                 const { error: insertErr } = await sb.from('posts').insert({
                     artist: ARTIST,
                     title: title || '',
                     description: description || '',
-                    image_url: urlData.publicUrl
+                    image_url: publicUrl
                 });
                 if (insertErr) throw { step: 'Step 2 — Saving to gallery', message: insertErr.message };
 
