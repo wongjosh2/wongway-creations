@@ -200,12 +200,12 @@
     <!-- ARTIST HEADER -->
     <section class="artist-header">
         <div class="artist-header-image">
-            <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=900&auto=format&fit=crop&q=80" alt="Josh Wong — Wheel Throwing">
+            <img id="joshHeaderImg" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=900&auto=format&fit=crop&q=80" alt="Josh Wong — Wheel Throwing">
         </div>
         <div class="artist-header-text">
             <div class="eyebrow">Wheel Throwing</div>
             <h1>Josh<br>Wong</h1>
-            <p>Josh works at the potter's wheel, centering clay and pulling forms up from nothing. His pieces — bowls, cups, and vessels — have a quiet symmetry that comes from years of practice and feel.</p>
+            <p id="joshBio">Josh works at the potter's wheel, centering clay and pulling forms up from nothing. His pieces — bowls, cups, and vessels — have a quiet symmetry that comes from years of practice and feel.</p>
         </div>
     </section>
 
@@ -275,6 +275,17 @@
         }
 
         loadGallery();
+
+        (async () => {
+            try {
+                const { data } = await sb.from('settings').select('key, value');
+                if (!data) return;
+                const s = {};
+                data.forEach(r => { if (r.value) s[r.key] = r.value; });
+                if (s.josh_header_image) document.getElementById('joshHeaderImg').src = s.josh_header_image;
+                if (s.josh_bio)          document.getElementById('joshBio').textContent = s.josh_bio;
+            } catch(e) {}
+        })();
     </script>
 
 </body>

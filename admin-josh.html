@@ -140,6 +140,15 @@
         .manage-desc-text { font-size: 12px; color: var(--mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .manage-actions { display: flex; gap: 8px; margin-top: 8px; }
         .manage-empty { text-align: center; padding: 48px 0; color: var(--mid); font-size: 14px; }
+        .setting-img-box { position: relative; width: 100%; overflow: hidden; background: var(--beige); margin-bottom: 10px; aspect-ratio: 16/9; }
+        .setting-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .img-change-btn { position: absolute; bottom: 10px; right: 10px; background: rgba(255,255,255,0.92); padding: 8px 14px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border: none; font-family: 'Inter', sans-serif; }
+        .img-uploading { position: absolute; inset: 0; background: rgba(250,247,242,0.8); display: none; align-items: center; justify-content: center; }
+        .img-uploading.active { display: flex; }
+        .save-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+        .save-row .btn { width: auto; padding: 14px 28px; }
+        .saved-msg { font-size: 13px; color: var(--accent); letter-spacing: 0.04em; opacity: 0; transition: opacity 0.3s; }
+        .saved-msg.show { opacity: 1; }
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(28,26,24,0.5); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
         .modal { background: var(--warm-white); width: 100%; max-width: 460px; padding: 36px 28px 28px; }
@@ -225,6 +234,7 @@
         <div class="tabs" style="flex-shrink:0;">
             <button class="tab active" onclick="switchTab('upload')">Add Piece</button>
             <button class="tab" onclick="switchTab('manage')">Manage Pieces</button>
+            <button class="tab" onclick="switchTab('settings')">Site Settings</button>
         </div>
 
         <!-- UPLOAD -->
@@ -274,6 +284,27 @@
         </div>
 
     </div>
+
+        <!-- SETTINGS PANEL -->
+        <div class="panel" id="settingsPanel">
+            <p class="panel-title">My Page Settings</p>
+            <p class="panel-sub">Update your header photo and bio text.</p>
+
+            <label class="field-label">Header Photo</label>
+            <div class="setting-img-box">
+                <img id="settingHeaderImg" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=900&auto=format&fit=crop&q=80" alt="Header">
+                <div class="img-uploading" id="headerImgLoading"><div class="spinner-sm"></div></div>
+                <button class="img-change-btn" onclick="changeSettingImg('josh_header_image','settingHeaderImg','headerImgLoading')">Change Photo</button>
+            </div>
+
+            <label class="field-label" style="margin-top:20px;">Bio Text</label>
+            <textarea id="settingBio" placeholder="Write your bio here..." style="min-height:130px;"></textarea>
+
+            <div class="save-row">
+                <button class="btn" onclick="saveSettingText()">Save Bio</button>
+                <span class="saved-msg" id="settingsSaved">Saved ✓</span>
+            </div>
+        </div>
 
     <!-- SUCCESS -->
     <div class="screen" id="successScreen">
@@ -330,11 +361,56 @@
             if (tab === 'upload') {
                 document.querySelectorAll('.tab')[0].classList.add('active');
                 document.getElementById('uploadPanel').classList.add('active');
-            } else {
+            } else if (tab === 'manage') {
                 document.querySelectorAll('.tab')[1].classList.add('active');
                 document.getElementById('managePanel').classList.add('active');
                 loadManage();
+            } else {
+                document.querySelectorAll('.tab')[2].classList.add('active');
+                document.getElementById('settingsPanel').classList.add('active');
+                loadPageSettings();
             }
+        }
+
+        async function loadPageSettings() {
+            try {
+                const { data } = await sb.from('settings').select('key, value');
+                const s = {};
+                (data || []).forEach(r => s[r.key] = r.value);
+                if (s.josh_header_image) document.getElementById('settingHeaderImg').src = s.josh_header_image;
+                if (s.josh_bio !== undefined) document.getElementById('settingBio').value = s.josh_bio;
+            } catch(e) {}
+        }
+
+        async function changeSettingImg(settingKey, previewId, loadingId) {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*';
+            input.onchange = async () => {
+                const file = input.files[0]; if (!file) return;
+                document.getElementById(loadingId).classList.add('active');
+                try {
+                    const fd = new FormData();
+                    fd.append('file', file, 'photo.jpg');
+                    fd.append('upload_preset', CLOUDINARY_PRESET);
+                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+                    const d = await res.json();
+                    if (!d.secure_url) throw new Error('Upload failed');
+                    await sb.from('settings').upsert({ key: settingKey, value: d.secure_url });
+                    document.getElementById(previewId).src = d.secure_url;
+                } catch(e) { alert('Could not upload. Try again.\n\n' + e.message); }
+                finally { document.getElementById(loadingId).classList.remove('active'); }
+            };
+            input.click();
+        }
+
+        async function saveSettingText() {
+            const bio = document.getElementById('settingBio').value.trim();
+            try {
+                await sb.from('settings').upsert({ key: 'josh_bio', value: bio });
+                const msg = document.getElementById('settingsSaved');
+                msg.classList.add('show');
+                setTimeout(() => msg.classList.remove('show'), 2500);
+            } catch(e) { alert('Could not save. Try again.'); }
         }
 
         function previewPhoto(e) {

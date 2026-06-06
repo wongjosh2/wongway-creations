@@ -205,12 +205,12 @@
     <!-- ARTIST HEADER -->
     <section class="artist-header">
         <div class="artist-header-image">
-            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=900&auto=format&fit=crop&q=80" alt="Irina Wong — Handbuilding">
+            <img id="irinaHeaderImg" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=900&auto=format&fit=crop&q=80" alt="Irina Wong — Handbuilding">
         </div>
         <div class="artist-header-text">
             <div class="eyebrow">Handbuilding</div>
             <h1>Irina<br>Wong</h1>
-            <p>Irina shapes each piece entirely by hand — no wheel, just clay, patience, and instinct. Her work includes sculptural bowls, small figures, and vessels that feel alive with texture and intention.</p>
+            <p id="irinaBio">Irina shapes each piece entirely by hand — no wheel, just clay, patience, and instinct. Her work includes sculptural bowls, small figures, and vessels that feel alive with texture and intention.</p>
         </div>
     </section>
 
@@ -280,6 +280,17 @@
         }
 
         loadGallery();
+
+        (async () => {
+            try {
+                const { data } = await sb.from('settings').select('key, value');
+                if (!data) return;
+                const s = {};
+                data.forEach(r => { if (r.value) s[r.key] = r.value; });
+                if (s.irina_header_image) document.getElementById('irinaHeaderImg').src = s.irina_header_image;
+                if (s.irina_bio)          document.getElementById('irinaBio').textContent = s.irina_bio;
+            } catch(e) {}
+        })();
     </script>
 
 </body>

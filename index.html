@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wongway Creations</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -271,12 +272,12 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1000&auto=format&fit=crop&q=80" alt="Handcrafted pottery">
+            <img id="heroImg" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1000&auto=format&fit=crop&q=80" alt="Handcrafted pottery">
         </div>
         <div class="hero-text">
             <div class="eyebrow">A Family Studio</div>
-            <h1>Shaped<br>by Hand</h1>
-            <p>Two artists. One studio. Every bowl, vessel, and sculpture is made by hand — no two pieces are ever the same.</p>
+            <h1 id="heroHeading">Shaped<br>by Hand</h1>
+            <p id="heroSubtext">Two artists. One studio. Every bowl, vessel, and sculpture is made by hand — no two pieces are ever the same.</p>
             <a href="#artists" class="btn">Meet the Artists</a>
         </div>
     </section>
@@ -290,7 +291,7 @@
         <div class="artists-grid">
 
             <a href="irina.html" class="artist-card">
-                <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=80" alt="Irina Wong — Handbuilding">
+                <img id="irenaCardImg" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=80" alt="Irina Wong — Handbuilding">
                 <div class="artist-card-label">
                     <div class="specialty">Handbuilding</div>
                     <h3>Irina Wong</h3>
@@ -299,7 +300,7 @@
             </a>
 
             <a href="josh.html" class="artist-card">
-                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80" alt="Josh Wong — Wheel Throwing">
+                <img id="joshCardImg" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80" alt="Josh Wong — Wheel Throwing">
                 <div class="artist-card-label">
                     <div class="specialty">Wheel Throwing</div>
                     <h3>Josh Wong</h3>
@@ -313,13 +314,13 @@
     <!-- ABOUT -->
     <section id="about" class="about">
         <div class="about-image">
-            <img src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=900&auto=format&fit=crop&q=80" alt="Studio">
+            <img id="aboutImg" src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=900&auto=format&fit=crop&q=80" alt="Studio">
         </div>
         <div class="about-text">
             <div class="eyebrow">Our Story</div>
-            <h2>Made by hand,<br>made with love</h2>
-            <p>We are Wongway Creations — a small family studio. Irina builds her forms by hand, shaping clay with patience and care. Josh throws on the wheel, finding beauty in the spin.</p>
-            <p>Every piece is glazed and fired by hand. We make things that are both beautiful and useful — made to belong in your home.</p>
+            <h2 id="aboutHeading">Made by hand,<br>made with love</h2>
+            <p id="aboutText1">We are Wongway Creations — a small family studio. Irina builds her forms by hand, shaping clay with patience and care. Josh throws on the wheel, finding beauty in the spin.</p>
+            <p id="aboutText2">Every piece is glazed and fired by hand. We make things that are both beautiful and useful — made to belong in your home.</p>
             <a href="#contact" class="btn">Get in Touch</a>
         </div>
     </section>
@@ -329,12 +330,41 @@
         <div class="eyebrow">Say Hello</div>
         <h2>Interested in a piece?</h2>
         <p>We would love to hear from you — whether it's a question, a custom order, or just to talk about pottery.</p>
-        <a href="mailto:hello@wongwaycreations.com" class="btn">hello@wongwaycreations.com</a>
+        <a id="contactEmail" href="mailto:hello@wongwaycreations.com" class="btn">hello@wongwaycreations.com</a>
     </section>
 
     <footer>
         <p>&copy; 2026 Wongway Creations &mdash; Handmade with Love</p>
     </footer>
 
+    <script>
+        const SUPABASE_URL      = 'https://sirvkycxyaiccsyzjoac.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        (async () => {
+            try {
+                const { data } = await sb.from('settings').select('key, value');
+                if (!data) return;
+                const s = {};
+                data.forEach(r => { if (r.value) s[r.key] = r.value; });
+
+                if (s.home_hero_image)       document.getElementById('heroImg').src = s.home_hero_image;
+                if (s.home_hero_heading)     document.getElementById('heroHeading').textContent = s.home_hero_heading;
+                if (s.home_hero_subtext)     document.getElementById('heroSubtext').textContent = s.home_hero_subtext;
+                if (s.home_irina_card_image) document.getElementById('irenaCardImg').src = s.home_irina_card_image;
+                if (s.home_josh_card_image)  document.getElementById('joshCardImg').src = s.home_josh_card_image;
+                if (s.home_about_image)      document.getElementById('aboutImg').src = s.home_about_image;
+                if (s.home_about_heading)    document.getElementById('aboutHeading').textContent = s.home_about_heading;
+                if (s.home_about_text1)      document.getElementById('aboutText1').textContent = s.home_about_text1;
+                if (s.home_about_text2)      document.getElementById('aboutText2').textContent = s.home_about_text2;
+                if (s.home_contact_email) {
+                    const el = document.getElementById('contactEmail');
+                    el.href = 'mailto:' + s.home_contact_email;
+                    el.textContent = s.home_contact_email;
+                }
+            } catch(e) {}
+        })();
+    </script>
 </body>
 </html>
