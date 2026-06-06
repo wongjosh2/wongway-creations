@@ -337,23 +337,6 @@
             document.getElementById('fileInput').click();
         }
 
-        function compressImage(file) {
-            return new Promise(resolve => {
-                const img = new Image();
-                img.onload = () => {
-                    const MAX = 1400;
-                    let w = img.width, h = img.height;
-                    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-                    if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    canvas.toBlob(resolve, 'image/jpeg', 0.88);
-                };
-                img.src = URL.createObjectURL(file);
-            });
-        }
-
         function showError(step, message) {
             document.getElementById('uploadErrorStep').textContent = step;
             document.getElementById('uploadErrorDetail').textContent = message;
@@ -372,32 +355,24 @@
             document.getElementById('submitBtn').disabled = true;
 
             try {
-                // Step 1: compress
-                let compressed;
-                try {
-                    compressed = await compressImage(selectedFile);
-                } catch (err) {
-                    throw { step: 'Step 1 — Preparing photo', message: err.message || 'Could not process the image.' };
-                }
+                // Upload original file directly — no compression
+                const ext = selectedFile.name.split('.').pop() || 'jpg';
+                const fileName = `${ARTIST}-${Date.now()}.${ext}`;
 
-                // Step 2: upload to storage
-                const fileName = `${ARTIST}-${Date.now()}.jpg`;
                 const { data: uploadData, error: uploadErr } = await sb.storage
                     .from('Photos')
-                    .upload(fileName, compressed, { contentType: 'image/jpeg' });
-                if (uploadErr) throw { step: 'Step 2 — Uploading photo to storage', message: uploadErr.message };
+                    .upload(fileName, selectedFile, { contentType: selectedFile.type });
+                if (uploadErr) throw { step: 'Step 1 — Uploading photo', message: uploadErr.message };
 
-                // Step 3: get public URL
                 const { data: urlData } = sb.storage.from('Photos').getPublicUrl(uploadData.path);
 
-                // Step 4: save to database
                 const { error: insertErr } = await sb.from('posts').insert({
                     artist: ARTIST,
                     title: title || '',
                     description: description || '',
                     image_url: urlData.publicUrl
                 });
-                if (insertErr) throw { step: 'Step 3 — Saving to gallery database', message: insertErr.message };
+                if (insertErr) throw { step: 'Step 2 — Saving to gallery', message: insertErr.message };
 
                 document.getElementById('loadingOverlay').classList.remove('active');
                 showScreen('successScreen');
