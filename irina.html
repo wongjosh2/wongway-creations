@@ -254,7 +254,7 @@
                     .from('posts')
                     .select('*')
                     .eq('artist', 'irina')
-                    .order('created_at', { ascending: false });
+                    .order('order_index', { ascending: true });
 
                 if (error) throw error;
 
