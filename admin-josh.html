@@ -147,6 +147,27 @@
         .spinner-sm { width: 24px; height: 24px; border: 2px solid rgba(0,0,0,0.08); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 24px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-overlay p { font-size: 14px; color: var(--mid); }
+
+        .error-box {
+            display: none;
+            background: #fdf0ef;
+            border-left: 3px solid var(--red);
+            padding: 16px 18px;
+            margin-bottom: 16px;
+        }
+        .error-box .error-step {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 6px;
+        }
+        .error-box .error-detail {
+            font-size: 13px;
+            color: var(--dark);
+            line-height: 1.6;
+            word-break: break-word;
+        }
     </style>
 </head>
 <body>
@@ -217,6 +238,11 @@
 
             <label class="field-label">Description <span style="opacity:0.5">(optional)</span></label>
             <textarea id="descInput" placeholder="Write about this piece — what inspired it, how you made it..."></textarea>
+
+            <div class="error-box" id="uploadError">
+                <div class="error-step" id="uploadErrorStep">Error</div>
+                <div class="error-detail" id="uploadErrorDetail"></div>
+            </div>
 
             <button class="btn" id="submitBtn" onclick="submitPost()">Post to Gallery</button>
         </div>
@@ -328,9 +354,17 @@
             });
         }
 
+        function showError(step, message) {
+            document.getElementById('uploadErrorStep').textContent = step;
+            document.getElementById('uploadErrorDetail').textContent = message;
+            document.getElementById('uploadError').style.display = 'block';
+            document.getElementById('uploadError').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         async function submitPost() {
             if (!selectedFile) { alert('Please choose a photo first.'); return; }
 
+            document.getElementById('uploadError').style.display = 'none';
             const title = document.getElementById('titleInput').value.trim();
             const description = document.getElementById('descInput').value.trim();
 
@@ -338,30 +372,40 @@
             document.getElementById('submitBtn').disabled = true;
 
             try {
-                const compressed = await compressImage(selectedFile);
-                const fileName = `${ARTIST}-${Date.now()}.jpg`;
+                // Step 1: compress
+                let compressed;
+                try {
+                    compressed = await compressImage(selectedFile);
+                } catch (err) {
+                    throw { step: 'Step 1 — Preparing photo', message: err.message || 'Could not process the image.' };
+                }
 
+                // Step 2: upload to storage
+                const fileName = `${ARTIST}-${Date.now()}.jpg`;
                 const { data: uploadData, error: uploadErr } = await sb.storage
                     .from('photos')
                     .upload(fileName, compressed, { contentType: 'image/jpeg' });
-                if (uploadErr) throw uploadErr;
+                if (uploadErr) throw { step: 'Step 2 — Uploading photo to storage', message: uploadErr.message };
 
+                // Step 3: get public URL
                 const { data: urlData } = sb.storage.from('photos').getPublicUrl(uploadData.path);
 
+                // Step 4: save to database
                 const { error: insertErr } = await sb.from('posts').insert({
                     artist: ARTIST,
                     title: title || '',
                     description: description || '',
                     image_url: urlData.publicUrl
                 });
-                if (insertErr) throw insertErr;
+                if (insertErr) throw { step: 'Step 3 — Saving to gallery database', message: insertErr.message };
 
                 document.getElementById('loadingOverlay').classList.remove('active');
                 showScreen('successScreen');
+
             } catch (err) {
                 document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('submitBtn').disabled = false;
-                alert('Something went wrong uploading.\n\n' + err.message);
+                showError(err.step || 'Upload failed', err.message || String(err));
             }
         }
 
