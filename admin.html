@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Add a Piece — Wongway Creations</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --beige: #f0e9dc;
+            --warm-white: #faf7f2;
+            --dark: #1c1a18;
+            --mid: #6e6560;
+            --accent: #8b7355;
+        }
+        body {
+            background: var(--warm-white);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 32px;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .nav-link {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--mid);
+            text-decoration: none;
+        }
+        .screen {
+            display: none;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 24px;
+        }
+        .screen.active { display: flex; }
+
+        /* PASSWORD */
+        .password-box {
+            background: var(--beige);
+            padding: 52px 40px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+        .password-box h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 32px;
+        }
+        .error-msg {
+            color: #c0392b;
+            font-size: 13px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        /* INPUTS */
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(0,0,0,0.15);
+            background: var(--warm-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--dark);
+            outline: none;
+            margin-bottom: 14px;
+            border-radius: 0;
+            -webkit-appearance: none;
+        }
+        input:focus, textarea:focus { border-color: var(--accent); }
+        textarea { resize: vertical; min-height: 110px; }
+
+        /* BUTTONS */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn:hover { opacity: 0.8; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-outline {
+            background: transparent;
+            color: var(--dark);
+            border: 1px solid var(--dark);
+            margin-top: 12px;
+        }
+
+        /* UPLOAD FORM */
+        .upload-box {
+            max-width: 480px;
+            width: 100%;
+        }
+        .upload-box h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-weight: 300;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: var(--mid);
+            margin-bottom: 32px;
+        }
+
+        /* PHOTO PICKER */
+        .photo-picker {
+            border: 2px dashed rgba(0,0,0,0.15);
+            background: var(--beige);
+            aspect-ratio: 4/3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .photo-picker:hover { border-color: var(--accent); }
+        .photo-picker.has-photo { border-style: solid; border-color: transparent; }
+        .photo-picker input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        #photoPreview {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .picker-label {
+            text-align: center;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .picker-icon { font-size: 44px; margin-bottom: 12px; }
+        .picker-label p { font-size: 14px; color: var(--mid); margin-bottom: 4px; }
+        .picker-label small { font-size: 12px; color: var(--mid); opacity: 0.6; }
+        .change-btn {
+            display: none;
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.92);
+            padding: 7px 16px;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            z-index: 10;
+        }
+        .photo-picker.has-photo .change-btn { display: block; }
+        .photo-picker.has-photo .picker-label { display: none; }
+
+        /* SUCCESS */
+        .success-box {
+            text-align: center;
+            max-width: 360px;
+        }
+        .success-icon { font-size: 52px; margin-bottom: 20px; }
+        .success-box h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            font-weight: 300;
+            margin-bottom: 12px;
+        }
+        .success-box p { font-size: 14px; color: var(--mid); margin-bottom: 32px; line-height: 1.7; }
+
+        /* LOADING */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(250,247,242,0.92);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 200;
+        }
+        .loading-overlay.active { display: flex; }
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 18px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay p { font-size: 14px; color: var(--mid); letter-spacing: 0.05em; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/" class="logo">Wongway Creations</a>
+        <a href="/" class="nav-link">← View Gallery</a>
+    </nav>
+
+    <!-- LOADING -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Uploading your photo...</p>
+    </div>
+
+    <!-- PASSWORD SCREEN -->
+    <div class="screen active" id="passwordScreen">
+        <div class="password-box">
+            <div class="eyebrow">Admin</div>
+            <h1>Welcome Back</h1>
+            <p class="error-msg" id="passwordError">Wrong password — try again.</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
+            <button class="btn" onclick="checkPassword()">Continue</button>
+        </div>
+    </div>
+
+    <!-- UPLOAD SCREEN -->
+    <div class="screen" id="uploadScreen">
+        <div class="upload-box">
+            <h1>Add a New Piece</h1>
+            <p class="subtitle">Share your latest work with the gallery.</p>
+
+            <div class="photo-picker" id="photoPicker">
+                <input type="file" id="fileInput" accept="image/*" onchange="previewPhoto(event)">
+                <img id="photoPreview" alt="Preview">
+                <div class="picker-label">
+                    <div class="picker-icon">📷</div>
+                    <p>Tap to choose a photo</p>
+                    <small>From your camera roll</small>
+                </div>
+                <button class="change-btn" onclick="changePhoto(event)">Change Photo</button>
+            </div>
+
+            <input type="text" id="titleInput" placeholder="Title  (e.g. Blue Glaze Bowl)" maxlength="80">
+            <textarea id="descInput" placeholder="Write a little about this piece — how it was made, what inspired it, or anything you'd like people to know."></textarea>
+            <button class="btn" id="submitBtn" onclick="submitPost()">Post to Gallery</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="screen" id="successScreen">
+        <div class="success-box">
+            <div class="success-icon">✓</div>
+            <h1>Posted!</h1>
+            <p>Your piece is now live on the gallery for everyone to see.</p>
+            <a href="/" class="btn">View Gallery</a>
+            <button class="btn btn-outline" onclick="addAnother()">Add Another Piece</button>
+        </div>
+    </div>
+
+    <script>
+        // ── Config ─────────────────────────────────────────────
+        const SUPABASE_URL      = 'https://sirvkyxxyaiccsyzjoac.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_Zn0zzdT5xvX16Y2Gcexaqg_rpUhEZ_V';
+        const ADMIN_PASSWORD    = 'pottery2026';
+        // ───────────────────────────────────────────────────────
+
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let selectedFile = null;
+
+        document.getElementById('passwordInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        function checkPassword() {
+            const val = document.getElementById('passwordInput').value;
+            if (val === ADMIN_PASSWORD) {
+                showScreen('uploadScreen');
+            } else {
+                const err = document.getElementById('passwordError');
+                err.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function previewPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedFile = file;
+            const preview = document.getElementById('photoPreview');
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            document.getElementById('photoPicker').classList.add('has-photo');
+        }
+
+        function changePhoto(e) {
+            e.stopPropagation();
+            document.getElementById('fileInput').click();
+        }
+
+        function compressImage(file) {
+            return new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => {
+                    const MAX = 1400;
+                    let w = img.width, h = img.height;
+                    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+                    if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    canvas.toBlob(resolve, 'image/jpeg', 0.88);
+                };
+                img.src = URL.createObjectURL(file);
+            });
+        }
+
+        async function submitPost() {
+            const title = document.getElementById('titleInput').value.trim();
+            const description = document.getElementById('descInput').value.trim();
+
+            if (!selectedFile) { alert('Please choose a photo first.'); return; }
+            if (!title)        { alert('Please add a title.'); return; }
+
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const compressed = await compressImage(selectedFile);
+                const fileName = `${Date.now()}.jpg`;
+
+                const { data: uploadData, error: uploadErr } = await sb.storage
+                    .from('photos')
+                    .upload(fileName, compressed, { contentType: 'image/jpeg' });
+
+                if (uploadErr) throw uploadErr;
+
+                const { data: urlData } = sb.storage.from('photos').getPublicUrl(uploadData.path);
+
+                const { error: insertErr } = await sb
+                    .from('posts')
+                    .insert({ title, description, image_url: urlData.publicUrl });
+
+                if (insertErr) throw insertErr;
+
+                document.getElementById('loadingOverlay').classList.remove('active');
+                showScreen('successScreen');
+
+            } catch (err) {
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                alert('Something went wrong uploading. Please try again.\n\n' + err.message);
+            }
+        }
+
+        function addAnother() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('photoPicker').classList.remove('has-photo');
+            document.getElementById('titleInput').value = '';
+            document.getElementById('descInput').value = '';
+            document.getElementById('submitBtn').disabled = false;
+            showScreen('uploadScreen');
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+
+</body>
+</html>

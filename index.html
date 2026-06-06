@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --beige: #f0e9dc;
             --warm-white: #faf7f2;
@@ -15,7 +14,6 @@
             --mid: #6e6560;
             --accent: #8b7355;
         }
-
         body {
             background-color: var(--warm-white);
             color: var(--dark);
@@ -35,21 +33,16 @@
             z-index: 100;
             border-bottom: 1px solid rgba(0,0,0,0.07);
         }
-
         .logo {
             font-family: 'Cormorant Garamond', serif;
             font-size: 28px;
             font-weight: 600;
             letter-spacing: 0.18em;
             text-transform: uppercase;
+            text-decoration: none;
+            color: var(--dark);
         }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 44px;
-        }
-
+        nav ul { list-style: none; display: flex; gap: 44px; }
         nav ul li a {
             text-decoration: none;
             color: var(--dark);
@@ -58,7 +51,6 @@
             text-transform: uppercase;
             transition: color 0.2s;
         }
-
         nav ul li a:hover { color: var(--accent); }
 
         /* HERO */
@@ -67,17 +59,8 @@
             grid-template-columns: 1.1fr 0.9fr;
             height: 88vh;
         }
-
-        .hero-image {
-            overflow: hidden;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .hero-image { overflow: hidden; }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
         .hero-text {
             background: var(--beige);
             display: flex;
@@ -85,15 +68,13 @@
             justify-content: center;
             padding: 80px 64px;
         }
-
-        .hero-text .eyebrow {
+        .eyebrow {
             font-size: 11px;
             letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--accent);
             margin-bottom: 20px;
         }
-
         .hero-text h1 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 68px;
@@ -101,7 +82,6 @@
             line-height: 1.05;
             margin-bottom: 28px;
         }
-
         .hero-text p {
             font-size: 15px;
             line-height: 1.85;
@@ -109,7 +89,6 @@
             max-width: 360px;
             margin-bottom: 44px;
         }
-
         .btn {
             display: inline-block;
             padding: 14px 38px;
@@ -119,93 +98,89 @@
             font-size: 11px;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            width: fit-content;
             transition: all 0.25s;
         }
+        .btn:hover { background: var(--dark); color: white; }
 
-        .btn:hover {
-            background: var(--dark);
-            color: white;
-        }
-
-        /* DIVIDER */
-        .divider {
+        /* ARTISTS SECTION */
+        .artists-header {
             text-align: center;
-            padding: 72px 64px 48px;
+            padding: 80px 64px 56px;
         }
-
-        .divider h2 {
+        .artists-header h2 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 40px;
             font-weight: 300;
             margin-bottom: 10px;
         }
+        .artists-header p { font-size: 13px; color: var(--mid); letter-spacing: 0.05em; }
 
-        .divider p {
-            font-size: 13px;
-            color: var(--mid);
-            letter-spacing: 0.06em;
-        }
-
-        /* GALLERY */
-        .gallery {
+        .artists-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
             padding: 0 64px 88px;
         }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-        }
-
-        .gallery-item {
+        .artist-card {
             position: relative;
             overflow: hidden;
             background: var(--beige);
             aspect-ratio: 3/4;
-            cursor: pointer;
+            text-decoration: none;
+            color: var(--dark);
+            display: block;
         }
-
-        .gallery-item img {
+        .artist-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-
-        .gallery-item:hover img {
-            transform: scale(1.04);
-        }
-
-        .gallery-label {
+        .artist-card:hover img { transform: scale(1.04); }
+        .artist-card-label {
             position: absolute;
-            bottom: 18px;
-            left: 18px;
-            background: var(--warm-white);
-            padding: 6px 14px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 36px 36px;
+            background: linear-gradient(to top, rgba(28,26,24,0.75) 0%, transparent 100%);
+            color: white;
+        }
+        .artist-card-label .specialty {
             font-size: 11px;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
+            opacity: 0.75;
+            margin-bottom: 8px;
+        }
+        .artist-card-label h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+        }
+        .artist-card-label .arrow {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: all 0.25s;
+        }
+        .artist-card:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         /* ABOUT */
         .about {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            min-height: 560px;
-            margin-bottom: 2px;
+            min-height: 520px;
         }
-
-        .about-image {
-            overflow: hidden;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .about-image { overflow: hidden; }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; }
         .about-text {
             background: var(--beige);
             display: flex;
@@ -213,15 +188,6 @@
             justify-content: center;
             padding: 80px 64px;
         }
-
-        .about-text .eyebrow {
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 22px;
-        }
-
         .about-text h2 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 44px;
@@ -229,7 +195,6 @@
             line-height: 1.2;
             margin-bottom: 28px;
         }
-
         .about-text p {
             font-size: 15px;
             line-height: 1.9;
@@ -237,7 +202,6 @@
             margin-bottom: 18px;
             max-width: 420px;
         }
-
         .about-text p:last-of-type { margin-bottom: 38px; }
 
         /* CONTACT */
@@ -246,27 +210,17 @@
             padding: 110px 64px;
             background: var(--beige);
         }
-
-        .contact .eyebrow {
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 22px;
-        }
-
         .contact h2 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 54px;
             font-weight: 300;
             margin-bottom: 20px;
         }
-
         .contact p {
             font-size: 15px;
             color: var(--mid);
             margin-bottom: 44px;
-            max-width: 460px;
+            max-width: 440px;
             margin-left: auto;
             margin-right: auto;
             line-height: 1.8;
@@ -286,17 +240,18 @@
         /* RESPONSIVE */
         @media (max-width: 768px) {
             nav { padding: 20px 24px; }
+            .logo { font-size: 20px; }
             nav ul { gap: 24px; }
             .hero { grid-template-columns: 1fr; height: auto; }
             .hero-image { height: 60vw; }
             .hero-text { padding: 48px 24px; }
             .hero-text h1 { font-size: 44px; }
-            .gallery { padding: 0 24px 60px; }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .artists-header { padding: 52px 24px 36px; }
+            .artists-grid { grid-template-columns: 1fr; padding: 0 24px 60px; }
+            .artist-card { aspect-ratio: 4/3; }
             .about { grid-template-columns: 1fr; }
             .about-image { height: 60vw; }
             .about-text { padding: 48px 24px; }
-            .divider { padding: 52px 24px 36px; }
             .contact { padding: 72px 24px; }
             .contact h2 { font-size: 38px; }
         }
@@ -304,11 +259,10 @@
 </head>
 <body>
 
-    <!-- NAV -->
     <nav>
-        <div class="logo">Wongway Creations</div>
+        <a href="/" class="logo">Wongway Creations</a>
         <ul>
-            <li><a href="#gallery">Work</a></li>
+            <li><a href="#artists">Artists</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -317,75 +271,55 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-image">
-            <img
-                src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1000&auto=format&fit=crop&q=80"
-                alt="Handcrafted pottery"
-            >
+            <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1000&auto=format&fit=crop&q=80" alt="Handcrafted pottery">
         </div>
         <div class="hero-text">
-            <div class="eyebrow">Handmade in Utah</div>
+            <div class="eyebrow">A Family Studio</div>
             <h1>Shaped<br>by Hand</h1>
-            <p>Bowls, vessels, and small sculptures — each piece made from earth and fired with care. No two are ever the same.</p>
-            <a href="#gallery" class="btn">View the Work</a>
+            <p>Two artists. One studio. Every bowl, vessel, and sculpture is made by hand — no two pieces are ever the same.</p>
+            <a href="#artists" class="btn">Meet the Artists</a>
         </div>
     </section>
 
-    <!-- GALLERY -->
-    <section id="gallery">
-        <div class="divider">
-            <h2>The Collection</h2>
-            <p>A selection of recent pieces</p>
+    <!-- ARTISTS -->
+    <section id="artists">
+        <div class="artists-header">
+            <h2>The Artists</h2>
+            <p>Explore each artist's work and story</p>
         </div>
-        <div class="gallery">
-            <div class="gallery-grid">
+        <div class="artists-grid">
 
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&auto=format&fit=crop&q=80" alt="Stoneware Bowl">
-                    <span class="gallery-label">Stoneware Bowl</span>
+            <a href="irina.html" class="artist-card">
+                <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&auto=format&fit=crop&q=80" alt="Irina Wong — Handbuilding">
+                <div class="artist-card-label">
+                    <div class="specialty">Handbuilding</div>
+                    <h3>Irina Wong</h3>
+                    <div class="arrow">View Work →</div>
                 </div>
+            </a>
 
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=600&auto=format&fit=crop&q=80" alt="Small Sculpture">
-                    <span class="gallery-label">Small Sculpture</span>
+            <a href="josh.html" class="artist-card">
+                <img src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80" alt="Josh Wong — Wheel Throwing">
+                <div class="artist-card-label">
+                    <div class="specialty">Wheel Throwing</div>
+                    <h3>Josh Wong</h3>
+                    <div class="arrow">View Work →</div>
                 </div>
+            </a>
 
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=600&auto=format&fit=crop&q=80" alt="Ceramic Vessel">
-                    <span class="gallery-label">Ceramic Vessel</span>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop&q=80" alt="Glazed Bowl">
-                    <span class="gallery-label">Glazed Bowl</span>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1604598264920-5b61a1e85c9f?w=600&auto=format&fit=crop&q=80" alt="Hand Built Piece">
-                    <span class="gallery-label">Hand Built Piece</span>
-                </div>
-
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?w=600&auto=format&fit=crop&q=80" alt="Studio Piece">
-                    <span class="gallery-label">Studio Piece</span>
-                </div>
-
-            </div>
         </div>
     </section>
 
     <!-- ABOUT -->
     <section id="about" class="about">
         <div class="about-image">
-            <img
-                src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=900&auto=format&fit=crop&q=80"
-                alt="Potter at work"
-            >
+            <img src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=900&auto=format&fit=crop&q=80" alt="Studio">
         </div>
         <div class="about-text">
             <div class="eyebrow">Our Story</div>
             <h2>Made by hand,<br>made with love</h2>
-            <p>We are Wongway Creations — a small family studio in Utah. Every bowl, vessel, and sculpture is shaped, glazed, and fired by hand.</p>
-            <p>We find joy in making things that are both beautiful and useful — pieces that belong on your table, your shelf, and in your home.</p>
+            <p>We are Wongway Creations — a small family studio. Irina builds her forms by hand, shaping clay with patience and care. Josh throws on the wheel, finding beauty in the spin.</p>
+            <p>Every piece is glazed and fired by hand. We make things that are both beautiful and useful — made to belong in your home.</p>
             <a href="#contact" class="btn">Get in Touch</a>
         </div>
     </section>
@@ -398,9 +332,8 @@
         <a href="mailto:hello@wongwaycreations.com" class="btn">hello@wongwaycreations.com</a>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 Wongway Creations &mdash; Handmade in Utah</p>
+        <p>&copy; 2026 Wongway Creations &mdash; Handmade with Love</p>
     </footer>
 
 </body>
