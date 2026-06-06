@@ -425,10 +425,12 @@
 
     <script>
         // ── Config ──────────────────────────────────────────────
-        const SUPABASE_URL      = 'https://sirvkyxxyaiccsyzjoac.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
-        const ADMIN_PASSWORD    = 'pottery2026';
-        const ARTIST            = 'irina';
+        const SUPABASE_URL        = 'https://sirvkyxxyaiccsyzjoac.supabase.co';
+        const SUPABASE_ANON_KEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
+        const CLOUDINARY_CLOUD    = 'dbv9zhioi';
+        const CLOUDINARY_PRESET   = 'wongway';
+        const ADMIN_PASSWORD      = 'pottery2026';
+        const ARTIST              = 'irina';
         // ────────────────────────────────────────────────────────
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -506,39 +508,35 @@
             document.getElementById('submitBtn').disabled = true;
 
             try {
-                const ext = selectedFile.name.split('.').pop() || 'jpg';
-                const fileName = `${ARTIST}-${Date.now()}.${ext}`;
-                const uploadUrl = `${SUPABASE_URL}/storage/v1/object/Photos/${fileName}`;
+                // Upload to Cloudinary
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('upload_preset', CLOUDINARY_PRESET);
 
-                // Direct fetch so we get the real error instead of "load failed"
-                let uploadResponse;
+                let cloudRes;
                 try {
-                    uploadResponse = await fetch(uploadUrl, {
+                    cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
                         method: 'POST',
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                            'Content-Type': selectedFile.type || 'image/jpeg',
-                            'x-upsert': 'false'
-                        },
-                        body: selectedFile
+                        body: formData
                     });
                 } catch (netErr) {
-                    throw { step: 'Network error — could not reach Supabase', message: netErr.message + ' — Go to Supabase → Settings → API → CORS and make sure Allowed Origins is set to *' };
+                    throw { step: 'Step 1 — Could not reach Cloudinary', message: netErr.message };
                 }
 
-                if (!uploadResponse.ok) {
-                    const body = await uploadResponse.text();
-                    throw { step: `Upload rejected — HTTP ${uploadResponse.status}`, message: body };
+                if (!cloudRes.ok) {
+                    const body = await cloudRes.text();
+                    throw { step: `Step 1 — Cloudinary rejected upload (HTTP ${cloudRes.status})`, message: body };
                 }
 
-                const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/Photos/${fileName}`;
+                const cloudData = await cloudRes.json();
+                const imageUrl = cloudData.secure_url;
 
+                // Save to Supabase database
                 const { error: insertErr } = await sb.from('posts').insert({
                     artist: ARTIST,
                     title: title || '',
                     description: description || '',
-                    image_url: publicUrl
+                    image_url: imageUrl
                 });
                 if (insertErr) throw { step: 'Step 2 — Saving to gallery', message: insertErr.message };
 
@@ -647,12 +645,10 @@
         }
 
         // MANAGE — DELETE
-        async function deletePost(id, imageUrl) {
+        async function deletePost(id) {
             if (!confirm('Delete this piece? This cannot be undone.')) return;
 
             try {
-                const path = imageUrl.split('/photos/')[1];
-                if (path) await sb.storage.from('Photos').remove([path]);
                 await sb.from('posts').delete().eq('id', id);
                 loadManage();
             } catch (err) {
