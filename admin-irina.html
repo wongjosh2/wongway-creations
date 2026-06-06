@@ -536,12 +536,12 @@
                 // Step 2: upload to storage
                 const fileName = `${ARTIST}-${Date.now()}.jpg`;
                 const { data: uploadData, error: uploadErr } = await sb.storage
-                    .from('photos')
+                    .from('Photos')
                     .upload(fileName, compressed, { contentType: 'image/jpeg' });
                 if (uploadErr) throw { step: 'Step 2 — Uploading photo to storage', message: uploadErr.message };
 
                 // Step 3: get public URL
-                const { data: urlData } = sb.storage.from('photos').getPublicUrl(uploadData.path);
+                const { data: urlData } = sb.storage.from('Photos').getPublicUrl(uploadData.path);
 
                 // Step 4: save to database
                 const { error: insertErr } = await sb.from('posts').insert({
@@ -662,7 +662,7 @@
 
             try {
                 const path = imageUrl.split('/photos/')[1];
-                if (path) await sb.storage.from('photos').remove([path]);
+                if (path) await sb.storage.from('Photos').remove([path]);
                 await sb.from('posts').delete().eq('id', id);
                 loadManage();
             } catch (err) {
