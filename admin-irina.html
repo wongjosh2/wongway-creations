@@ -211,19 +211,8 @@
         </div>
     </div>
 
-    <!-- PASSWORD -->
-    <div class="screen active" id="passwordScreen">
-        <div class="card">
-            <div class="eyebrow">Irina's Studio</div>
-            <h1>Welcome, Irina</h1>
-            <p class="error-msg" id="passwordError">Wrong password — try again.</p>
-            <input type="password" id="passwordInput" placeholder="Enter your password" autocomplete="current-password">
-            <button class="btn" onclick="checkPassword()">Continue</button>
-        </div>
-    </div>
-
     <!-- MAIN (tabs) -->
-    <div class="screen" id="mainScreen">
+    <div class="screen active" id="mainScreen">
 
         <div class="tabs" style="flex-shrink:0;">
             <button class="tab active" onclick="switchTab('upload')">Add Piece</button>
@@ -338,17 +327,7 @@
             return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
 
-        // PASSWORD
-        document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
-        function checkPassword() {
-            if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-                showScreen('mainScreen');
-                loadManage();
-            } else {
-                document.getElementById('passwordError').style.display = 'block';
-                document.getElementById('passwordInput').value = '';
-            }
-        }
+        loadManage();
 
         // TABS
         function switchTab(tab) {

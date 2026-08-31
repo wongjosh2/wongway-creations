@@ -100,19 +100,8 @@
         <a href="/" class="nav-link">← View Site</a>
     </nav>
 
-    <!-- PASSWORD -->
-    <div class="screen active" id="passwordScreen">
-        <div class="card">
-            <div class="eyebrow">Admin</div>
-            <h1>Homepage Settings</h1>
-            <p class="error-msg" id="passwordError">Wrong password — try again.</p>
-            <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
-            <button class="btn" onclick="checkPassword()">Continue</button>
-        </div>
-    </div>
-
     <!-- MAIN -->
-    <div class="screen" id="mainScreen">
+    <div class="screen active" id="mainScreen">
         <div class="settings-wrap">
             <p class="page-title">Homepage</p>
             <p class="page-sub">Tap any photo to crop and reposition it. Use ± or pinch to zoom. Click Save for text changes.</p>
@@ -221,18 +210,7 @@
         const ADMIN_PASSWORD    = 'pottery2026';
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ── PASSWORD ──────────────────────────────────────────
-        document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
-        function checkPassword() {
-            if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
-                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-                document.getElementById('mainScreen').classList.add('active');
-                loadAllSettings();
-            } else {
-                document.getElementById('passwordError').style.display = 'block';
-                document.getElementById('passwordInput').value = '';
-            }
-        }
+        loadAllSettings();
 
         // ── LOAD SETTINGS ─────────────────────────────────────
         async function loadAllSettings() {
