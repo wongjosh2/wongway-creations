@@ -245,13 +245,18 @@
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
             try {
-                const { data: posts, error } = await sb
+                let { data: posts, error } = await sb
                     .from('posts')
                     .select('*')
                     .eq('artist', 'josh')
                     .order('order_index', { ascending: true });
 
-                if (error) throw error;
+                if (error) {
+                    // order_index column may not exist yet — fall back to upload date
+                    const fallback = await sb.from('posts').select('*').eq('artist', 'josh').order('created_at', { ascending: false });
+                    if (fallback.error) throw fallback.error;
+                    posts = fallback.data;
+                }
 
                 if (!posts || posts.length === 0) {
                     grid.innerHTML = '<div class="gallery-empty">No pieces here yet — check back soon.</div>';
