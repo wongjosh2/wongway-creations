@@ -20,12 +20,14 @@
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(0,0,0,0.07); position: sticky; top: 0; background: var(--warm-white); z-index: 50; }
         .logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--dark); }
         .nav-link { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); text-decoration: none; }
+
         .screen { display: none; flex: 1; justify-content: center; align-items: center; padding: 40px 20px; }
         .screen.active { display: flex; }
         .card { background: var(--beige); padding: 48px 36px; max-width: 380px; width: 100%; text-align: center; }
         .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
         h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; margin-bottom: 26px; }
         .error-msg { color: var(--red); font-size: 13px; margin-bottom: 12px; display: none; }
+
         input[type="password"], input[type="text"], input[type="email"], textarea {
             width: 100%; padding: 14px 16px;
             border: 1px solid rgba(0,0,0,0.15); background: var(--warm-white);
@@ -35,48 +37,30 @@
         input:focus, textarea:focus { border-color: var(--accent); }
         textarea { resize: vertical; min-height: 100px; }
         .field-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; display: block; }
-        .btn {
-            display: block; width: 100%; padding: 16px;
-            background: var(--dark); color: white; border: none;
-            font-family: 'Inter', sans-serif; font-size: 12px;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            cursor: pointer; transition: opacity 0.2s; text-align: center; text-decoration: none;
-        }
+
+        .btn { display: block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; text-align: center; text-decoration: none; }
         .btn:hover { opacity: 0.8; }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-outline { background: transparent; color: var(--dark); border: 1px solid var(--dark); }
-        .btn-sm-outline {
-            display: inline-block; padding: 10px 20px; font-size: 11px;
-            letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.25); background: var(--warm-white);
-            font-family: 'Inter', sans-serif; color: var(--dark); transition: all 0.2s;
-        }
-        .btn-sm-outline:hover { background: var(--dark); color: white; border-color: var(--dark); }
 
         /* MAIN */
         #mainScreen { align-items: flex-start; padding: 0; }
         .settings-wrap { width: 100%; max-width: 560px; margin: 0 auto; padding: 40px 20px 80px; }
+        .page-title { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; margin-bottom: 6px; }
+        .page-sub { font-size: 13px; color: var(--mid); margin-bottom: 40px; }
 
-        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; margin-bottom: 4px; }
-        .section-sub { font-size: 13px; color: var(--mid); margin-bottom: 24px; }
         .settings-section { margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(0,0,0,0.07); }
         .settings-section:last-child { border-bottom: none; }
+        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 4px; }
+        .section-sub { font-size: 13px; color: var(--mid); margin-bottom: 22px; }
 
-        .setting-img-box {
-            position: relative; width: 100%; overflow: hidden; background: var(--beige); margin-bottom: 10px;
-        }
-        .setting-img-box.landscape { aspect-ratio: 16/9; }
-        .setting-img-box.portrait { aspect-ratio: 3/4; max-height: 280px; }
-        .setting-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .img-change-btn {
-            position: absolute; bottom: 12px; right: 12px;
-            background: rgba(255,255,255,0.92); padding: 8px 16px;
-            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
-            cursor: pointer; border: none; font-family: 'Inter', sans-serif;
-        }
-        .img-change-btn:hover { background: white; }
-        .img-uploading { position: absolute; inset: 0; background: rgba(250,247,242,0.8); display: none; align-items: center; justify-content: center; }
-        .img-uploading.active { display: flex; }
+        /* IMAGE SLOTS */
+        .img-slot { position: relative; width: 100%; overflow: hidden; background: var(--beige); margin-bottom: 8px; cursor: pointer; }
+        .img-slot.landscape { aspect-ratio: 4/3; }
+        .img-slot.square   { aspect-ratio: 1/1; }
+        .img-slot.portrait { aspect-ratio: 3/4; max-height: 300px; }
+        .img-slot img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        .img-slot::after { content: 'Tap to change'; position: absolute; inset: 0; background: rgba(28,26,24,0); color: white; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .img-slot:hover::after { background: rgba(28,26,24,0.35); }
 
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 10px; }
 
@@ -85,11 +69,28 @@
         .saved-msg { font-size: 13px; color: var(--accent); letter-spacing: 0.04em; opacity: 0; transition: opacity 0.3s; }
         .saved-msg.show { opacity: 1; }
 
-        .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(250,247,242,0.93); justify-content: center; align-items: center; flex-direction: column; z-index: 200; }
-        .loading-overlay.active { display: flex; }
-        .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+        /* CROP MODAL */
+        .crop-modal { display: none; position: fixed; inset: 0; background: rgba(20,18,16,0.95); z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+        .crop-modal.active { display: flex; }
+        .crop-inner { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 12px; }
+        .crop-header { color: white; }
+        .crop-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 2px; }
+        .crop-hint-text { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
+        .crop-frame { position: relative; overflow: hidden; background: #111; width: 100%; touch-action: none; user-select: none; cursor: move; }
+        #cropImg { position: absolute; display: block; }
+        .crop-zoom { display: flex; align-items: center; gap: 10px; }
+        .zoom-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.12); border: none; color: white; font-size: 20px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
+        .zoom-btn:hover { background: rgba(255,255,255,0.22); }
+        .zoom-track { flex: 1; height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; }
+        #zoomFill { height: 100%; background: white; border-radius: 2px; width: 0%; transition: width 0.1s; }
+        .zoom-label { font-size: 12px; color: rgba(255,255,255,0.45); width: 32px; text-align: right; flex-shrink: 0; }
+        .crop-footer { display: flex; gap: 10px; justify-content: flex-end; }
+        .crop-cancel { padding: 13px 22px; background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.22); font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+        .crop-confirm { padding: 13px 26px; background: white; color: var(--dark); border: none; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+        .crop-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .spin-sm { width: 18px; height: 18px; border: 2px solid rgba(28,26,24,0.15); border-top-color: var(--dark); border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-overlay p { font-size: 14px; color: var(--mid); }
     </style>
 </head>
 <body>
@@ -98,11 +99,6 @@
         <a href="/" class="logo">Wongway Creations</a>
         <a href="/" class="nav-link">← View Site</a>
     </nav>
-
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="spinner"></div>
-        <p id="loadingMsg">Uploading photo...</p>
-    </div>
 
     <!-- PASSWORD -->
     <div class="screen active" id="passwordScreen">
@@ -118,28 +114,21 @@
     <!-- MAIN -->
     <div class="screen" id="mainScreen">
         <div class="settings-wrap">
-
-            <p style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:300; margin-bottom:6px;">Homepage</p>
-            <p style="font-size:13px; color:var(--mid); margin-bottom:40px;">Changes save immediately for photos, click Save for text.</p>
+            <p class="page-title">Homepage</p>
+            <p class="page-sub">Tap any photo to crop and reposition it. Use ± or pinch to zoom. Click Save for text changes.</p>
 
             <!-- HERO -->
             <div class="settings-section">
                 <p class="section-title">Hero Section</p>
-                <p class="section-sub">The big photo and text visitors see first.</p>
-
+                <p class="section-sub">The big image and headline visitors see first.</p>
                 <label class="field-label">Background Photo</label>
-                <div class="setting-img-box landscape" id="heroImgBox">
-                    <img id="heroImgPreview" src="" alt="Hero">
-                    <div class="img-uploading" id="heroImgLoading"><div class="spinner" style="margin:0"></div></div>
-                    <button class="img-change-btn" onclick="changeImg('home_hero_image','heroImgPreview','heroImgLoading')">Change Photo</button>
+                <div class="img-slot square" onclick="openCrop('home_hero_image','heroPreview',1,1)">
+                    <img id="heroPreview" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&auto=format&fit=crop&q=80" alt="">
                 </div>
-
                 <label class="field-label">Heading</label>
                 <input type="text" id="heroHeading" placeholder="e.g. Shaped by Hand" maxlength="60">
-
                 <label class="field-label">Subtext</label>
-                <textarea id="heroSubtext" placeholder="A short description..."></textarea>
-
+                <textarea id="heroSubtext"></textarea>
                 <div class="save-row">
                     <button class="btn" onclick="saveSection(['home_hero_heading','home_hero_subtext'],['heroHeading','heroSubtext'],'heroSaved')">Save Text</button>
                     <span class="saved-msg" id="heroSaved">Saved ✓</span>
@@ -149,23 +138,18 @@
             <!-- ARTIST CARDS -->
             <div class="settings-section">
                 <p class="section-title">Artist Cards</p>
-                <p class="section-sub">The two photo cards linking to each artist's gallery.</p>
-
+                <p class="section-sub">The two portrait photos linking to each artist's gallery.</p>
                 <div class="two-col">
                     <div>
-                        <label class="field-label">Irina's Card Photo</label>
-                        <div class="setting-img-box portrait">
-                            <img id="irenaCardImgPreview" src="" alt="Irina card">
-                            <div class="img-uploading" id="irenaCardLoading"><div class="spinner" style="margin:0"></div></div>
-                            <button class="img-change-btn" onclick="changeImg('home_irina_card_image','irenaCardImgPreview','irenaCardLoading')">Change</button>
+                        <label class="field-label">Irina's Card</label>
+                        <div class="img-slot portrait" onclick="openCrop('home_irina_card_image','irenaCardPreview',3,4)">
+                            <img id="irenaCardPreview" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=400&auto=format&fit=crop&q=80" alt="">
                         </div>
                     </div>
                     <div>
-                        <label class="field-label">Josh's Card Photo</label>
-                        <div class="setting-img-box portrait">
-                            <img id="joshCardImgPreview" src="" alt="Josh card">
-                            <div class="img-uploading" id="joshCardLoading"><div class="spinner" style="margin:0"></div></div>
-                            <button class="img-change-btn" onclick="changeImg('home_josh_card_image','joshCardImgPreview','joshCardLoading')">Change</button>
+                        <label class="field-label">Josh's Card</label>
+                        <div class="img-slot portrait" onclick="openCrop('home_josh_card_image','joshCardPreview',3,4)">
+                            <img id="joshCardPreview" src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=400&auto=format&fit=crop&q=80" alt="">
                         </div>
                     </div>
                 </div>
@@ -175,23 +159,16 @@
             <div class="settings-section">
                 <p class="section-title">About Section</p>
                 <p class="section-sub">The studio story section below the artist cards.</p>
-
                 <label class="field-label">Background Photo</label>
-                <div class="setting-img-box landscape">
-                    <img id="aboutImgPreview" src="" alt="About">
-                    <div class="img-uploading" id="aboutImgLoading"><div class="spinner" style="margin:0"></div></div>
-                    <button class="img-change-btn" onclick="changeImg('home_about_image','aboutImgPreview','aboutImgLoading')">Change Photo</button>
+                <div class="img-slot landscape" onclick="openCrop('home_about_image','aboutPreview',4,3)">
+                    <img id="aboutPreview" src="https://images.unsplash.com/photo-1487700160041-babef9c3cb55?w=800&auto=format&fit=crop&q=80" alt="">
                 </div>
-
                 <label class="field-label">Heading</label>
                 <input type="text" id="aboutHeading" placeholder="e.g. Made by hand, made with love" maxlength="80">
-
                 <label class="field-label">First Paragraph</label>
-                <textarea id="aboutText1" placeholder="First paragraph..."></textarea>
-
+                <textarea id="aboutText1"></textarea>
                 <label class="field-label">Second Paragraph</label>
-                <textarea id="aboutText2" placeholder="Second paragraph..."></textarea>
-
+                <textarea id="aboutText2"></textarea>
                 <div class="save-row">
                     <button class="btn" onclick="saveSection(['home_about_heading','home_about_text1','home_about_text2'],['aboutHeading','aboutText1','aboutText2'],'aboutSaved')">Save Text</button>
                     <span class="saved-msg" id="aboutSaved">Saved ✓</span>
@@ -202,10 +179,8 @@
             <div class="settings-section">
                 <p class="section-title">Contact</p>
                 <p class="section-sub">The email address shown in the contact section.</p>
-
                 <label class="field-label">Email Address</label>
                 <input type="email" id="contactEmail" placeholder="e.g. hello@wongwaycreations.com">
-
                 <div class="save-row">
                     <button class="btn" onclick="saveSection(['home_contact_email'],['contactEmail'],'contactSaved')">Save Email</button>
                     <span class="saved-msg" id="contactSaved">Saved ✓</span>
@@ -215,19 +190,39 @@
         </div>
     </div>
 
+    <!-- CROP MODAL (shared for all image slots) -->
+    <div class="crop-modal" id="cropModal">
+        <div class="crop-inner">
+            <div class="crop-header">
+                <p class="crop-title">Position Photo</p>
+                <p class="crop-hint-text">Drag to reposition · pinch or use ± to zoom</p>
+            </div>
+            <div class="crop-frame" id="cropFrame">
+                <img id="cropImg" src="" alt="">
+            </div>
+            <div class="crop-zoom">
+                <button class="zoom-btn" onclick="adjustZoom(-0.2)">−</button>
+                <div class="zoom-track"><div id="zoomFill"></div></div>
+                <button class="zoom-btn" onclick="adjustZoom(0.2)">+</button>
+                <span class="zoom-label" id="zoomLabel">1×</span>
+            </div>
+            <div class="crop-footer">
+                <button class="crop-cancel" onclick="closeCropModal()">Cancel</button>
+                <button class="crop-confirm" id="cropConfirmBtn" onclick="confirmCrop()">Use This Photo</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const SUPABASE_URL      = 'https://sirvkycxyaiccsyzjoac.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
         const CLOUDINARY_CLOUD  = 'dbv9zhioi';
         const CLOUDINARY_PRESET = 'wongway';
         const ADMIN_PASSWORD    = 'pottery2026';
-
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        document.getElementById('passwordInput').addEventListener('keydown', e => {
-            if (e.key === 'Enter') checkPassword();
-        });
-
+        // ── PASSWORD ──────────────────────────────────────────
+        document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
         function checkPassword() {
             if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -239,54 +234,28 @@
             }
         }
 
+        // ── LOAD SETTINGS ─────────────────────────────────────
         async function loadAllSettings() {
             try {
                 const { data } = await sb.from('settings').select('key, value');
                 const s = {};
                 (data || []).forEach(r => s[r.key] = r.value);
-
-                setImg('heroImgPreview', s.home_hero_image);
-                setVal('heroHeading', s.home_hero_heading);
-                setVal('heroSubtext', s.home_hero_subtext);
-                setImg('irenaCardImgPreview', s.home_irina_card_image);
-                setImg('joshCardImgPreview', s.home_josh_card_image);
-                setImg('aboutImgPreview', s.home_about_image);
-                setVal('aboutHeading', s.home_about_heading);
-                setVal('aboutText1', s.home_about_text1);
-                setVal('aboutText2', s.home_about_text2);
-                setVal('contactEmail', s.home_contact_email);
+                if (s.home_hero_image)        setImg('heroPreview',      s.home_hero_image);
+                if (s.home_hero_heading)      setVal('heroHeading',      s.home_hero_heading);
+                if (s.home_hero_subtext)      setVal('heroSubtext',      s.home_hero_subtext);
+                if (s.home_irina_card_image)  setImg('irenaCardPreview', s.home_irina_card_image);
+                if (s.home_josh_card_image)   setImg('joshCardPreview',  s.home_josh_card_image);
+                if (s.home_about_image)       setImg('aboutPreview',     s.home_about_image);
+                if (s.home_about_heading)     setVal('aboutHeading',     s.home_about_heading);
+                if (s.home_about_text1)       setVal('aboutText1',       s.home_about_text1);
+                if (s.home_about_text2)       setVal('aboutText2',       s.home_about_text2);
+                if (s.home_contact_email)     setVal('contactEmail',     s.home_contact_email);
             } catch(e) {}
         }
-
         function setImg(id, url) { if (url) document.getElementById(id).src = url; }
         function setVal(id, val) { if (val !== undefined) document.getElementById(id).value = val; }
 
-        async function changeImg(settingKey, previewId, loadingId) {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = async () => {
-                const file = input.files[0];
-                if (!file) return;
-                document.getElementById(loadingId).classList.add('active');
-                try {
-                    const fd = new FormData();
-                    fd.append('file', file, 'photo.jpg');
-                    fd.append('upload_preset', CLOUDINARY_PRESET);
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
-                    const d = await res.json();
-                    if (!d.secure_url) throw new Error('Upload failed');
-                    await sb.from('settings').upsert({ key: settingKey, value: d.secure_url });
-                    document.getElementById(previewId).src = d.secure_url;
-                } catch(e) {
-                    alert('Could not upload photo. Try again.\n\n' + e.message);
-                } finally {
-                    document.getElementById(loadingId).classList.remove('active');
-                }
-            };
-            input.click();
-        }
-
+        // ── SAVE TEXT ─────────────────────────────────────────
         async function saveSection(keys, inputIds, savedMsgId) {
             const updates = keys.map((key, i) => ({ key, value: document.getElementById(inputIds[i]).value.trim() }));
             try {
@@ -294,9 +263,163 @@
                 const msg = document.getElementById(savedMsgId);
                 msg.classList.add('show');
                 setTimeout(() => msg.classList.remove('show'), 2500);
-            } catch(e) {
-                alert('Could not save. Try again.');
+            } catch(e) { alert('Could not save. Try again.'); }
+        }
+
+        // ── CROP + ZOOM STATE ─────────────────────────────────
+        let cropKey = null, cropPreviewId = null, cropFile = null;
+        let cropX = 0, cropY = 0;
+        let cropBaseScale = 1, cropUserZoom = 1;
+        let isDragging = false, dragStartX = 0, dragStartY = 0;
+        let pinchDist = null;
+
+        function openCrop(settingKey, previewId, aspectW, aspectH) {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*';
+            input.onchange = () => {
+                const file = input.files[0]; if (!file) return;
+                cropKey = settingKey; cropPreviewId = previewId; cropFile = file;
+                cropX = 0; cropY = 0; cropUserZoom = 1;
+                document.getElementById('cropFrame').style.aspectRatio = `${aspectW}/${aspectH}`;
+                const img = document.getElementById('cropImg');
+                img.onload = setupCrop;
+                img.src = URL.createObjectURL(file);
+                document.getElementById('cropModal').classList.add('active');
+            };
+            input.click();
+        }
+
+        function setupCrop() {
+            const img = document.getElementById('cropImg');
+            const frame = document.getElementById('cropFrame');
+            const cW = frame.offsetWidth, cH = frame.offsetHeight;
+            cropBaseScale = Math.max(cW / img.naturalWidth, cH / img.naturalHeight);
+            cropUserZoom = 1; cropX = 0; cropY = 0;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const scale = cropBaseScale * cropUserZoom;
+            const img = document.getElementById('cropImg');
+            const frame = document.getElementById('cropFrame');
+            const cW = frame.offsetWidth, cH = frame.offsetHeight;
+            const sW = Math.round(img.naturalWidth * scale);
+            const sH = Math.round(img.naturalHeight * scale);
+            img.style.width = sW + 'px'; img.style.height = sH + 'px';
+            img.style.left = Math.round((cW - sW) / 2) + 'px';
+            img.style.top  = Math.round((cH - sH) / 2) + 'px';
+            const maxX = Math.max(0, (sW - cW) / 2);
+            const maxY = Math.max(0, (sH - cH) / 2);
+            cropX = Math.max(-maxX, Math.min(maxX, cropX));
+            cropY = Math.max(-maxY, Math.min(maxY, cropY));
+            img.style.transform = `translate(${cropX}px,${cropY}px)`;
+            const pct = Math.round((cropUserZoom - 1) / 3 * 100);
+            document.getElementById('zoomFill').style.width = pct + '%';
+            document.getElementById('zoomLabel').textContent = cropUserZoom.toFixed(1) + '×';
+        }
+
+        function adjustZoom(delta) {
+            cropUserZoom = Math.max(1, Math.min(4, cropUserZoom + delta));
+            applyZoom();
+        }
+
+        function applyDrag(dx, dy) {
+            const img = document.getElementById('cropImg');
+            const frame = document.getElementById('cropFrame');
+            const maxX = Math.max(0, (parseFloat(img.style.width)  - frame.offsetWidth)  / 2);
+            const maxY = Math.max(0, (parseFloat(img.style.height) - frame.offsetHeight) / 2);
+            cropX = Math.max(-maxX, Math.min(maxX, dx));
+            cropY = Math.max(-maxY, Math.min(maxY, dy));
+            img.style.transform = `translate(${cropX}px,${cropY}px)`;
+        }
+
+        // Mouse drag
+        document.getElementById('cropFrame').addEventListener('mousedown', e => {
+            if (e.target.closest('.zoom-btn')) return;
+            isDragging = true; dragStartX = e.clientX - cropX; dragStartY = e.clientY - cropY; e.preventDefault();
+        });
+        window.addEventListener('mousemove', e => { if (isDragging) applyDrag(e.clientX - dragStartX, e.clientY - dragStartY); });
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        // Touch drag + pinch zoom
+        document.getElementById('cropFrame').addEventListener('touchstart', e => {
+            if (e.touches.length === 2) {
+                pinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                isDragging = false;
+            } else {
+                isDragging = true; dragStartX = e.touches[0].clientX - cropX; dragStartY = e.touches[0].clientY - cropY;
             }
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchmove', e => {
+            if (e.touches.length === 2 && pinchDist !== null) {
+                const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                cropUserZoom = Math.max(1, Math.min(4, cropUserZoom + (d - pinchDist) / 280));
+                pinchDist = d;
+                applyZoom();
+                e.preventDefault();
+            } else if (isDragging && e.touches.length === 1) {
+                applyDrag(e.touches[0].clientX - dragStartX, e.touches[0].clientY - dragStartY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+        window.addEventListener('touchend', e => {
+            if (e.touches.length < 2) pinchDist = null;
+            if (e.touches.length === 0) isDragging = false;
+        });
+
+        function closeCropModal() {
+            document.getElementById('cropModal').classList.remove('active');
+            cropKey = null; cropFile = null;
+        }
+
+        async function confirmCrop() {
+            const btn = document.getElementById('cropConfirmBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span style="display:inline-block;width:16px;height:16px;border:2px solid rgba(28,26,24,0.2);border-top-color:var(--dark);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;"></span>';
+            try {
+                const blob = getCropBlob();
+                const uploadFile = blob || cropFile;
+                const fd = new FormData();
+                fd.append('file', uploadFile, 'photo.jpg');
+                fd.append('upload_preset', CLOUDINARY_PRESET);
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+                const d = await res.json();
+                if (!d.secure_url) throw new Error('Upload failed');
+                await sb.from('settings').upsert({ key: cropKey, value: d.secure_url });
+                document.getElementById(cropPreviewId).src = d.secure_url;
+                closeCropModal();
+            } catch(e) {
+                alert('Could not upload. Try again.\n\n' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Use This Photo';
+            }
+        }
+
+        function getCropBlob() {
+            try {
+                const frame = document.getElementById('cropFrame');
+                const img   = document.getElementById('cropImg');
+                const scale = cropBaseScale * cropUserZoom;
+                const cW = frame.offsetWidth, cH = frame.offsetHeight;
+                const sW = parseFloat(img.style.width)  || cW;
+                const sH = parseFloat(img.style.height) || cH;
+                const imgLeft = (cW - sW) / 2 + cropX;
+                const imgTop  = (cH - sH) / 2 + cropY;
+                const srcX = -imgLeft / scale, srcY = -imgTop  / scale;
+                const srcW = cW / scale,       srcH = cH / scale;
+                const outW = 1600, outH = Math.round(1600 * cH / cW);
+                const canvas = document.createElement('canvas');
+                canvas.width = outW; canvas.height = outH;
+                canvas.getContext('2d').drawImage(img, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
+                const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+                if (!dataURL || dataURL.length < 200) return null;
+                const bstr = atob(dataURL.split(',')[1]);
+                const u8 = new Uint8Array(bstr.length);
+                for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+                return new Blob([u8], { type: 'image/jpeg' });
+            } catch(e) { return null; }
         }
     </script>
 

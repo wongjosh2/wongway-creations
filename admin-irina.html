@@ -17,36 +17,11 @@
             --accent: #8b7355;
             --red: #c0392b;
         }
-        body {
-            background: var(--warm-white);
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        body { background: var(--warm-white); font-family: 'Inter', sans-serif; font-weight: 300; min-height: 100vh; display: flex; flex-direction: column; }
 
         /* NAV */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 28px;
-            border-bottom: 1px solid rgba(0,0,0,0.07);
-            position: sticky;
-            top: 0;
-            background: var(--warm-white);
-            z-index: 50;
-        }
-        .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: var(--dark);
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; border-bottom: 1px solid rgba(0,0,0,0.07); position: sticky; top: 0; background: var(--warm-white); z-index: 50; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--dark); }
         .nav-link { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); text-decoration: none; }
 
         /* SCREENS */
@@ -54,69 +29,23 @@
         .screen.active { display: flex; }
 
         /* PASSWORD */
-        .card {
-            background: var(--beige);
-            padding: 48px 36px;
-            max-width: 380px;
-            width: 100%;
-            text-align: center;
-        }
+        .card { background: var(--beige); padding: 48px 36px; max-width: 380px; width: 100%; text-align: center; }
         .eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
         h1 { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-weight: 300; margin-bottom: 26px; }
         .error-msg { color: var(--red); font-size: 13px; margin-bottom: 12px; display: none; }
 
         /* INPUTS */
-        input[type="password"], input[type="text"], textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid rgba(0,0,0,0.15);
-            background: var(--warm-white);
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            font-weight: 300;
-            color: var(--dark);
-            outline: none;
-            margin-bottom: 12px;
-            border-radius: 0;
-            -webkit-appearance: none;
-        }
+        input[type="password"], input[type="text"], textarea { width: 100%; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.15); background: var(--warm-white); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 300; color: var(--dark); outline: none; margin-bottom: 12px; border-radius: 0; -webkit-appearance: none; }
         input:focus, textarea:focus { border-color: var(--accent); }
         textarea { resize: vertical; min-height: 100px; }
         .field-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; display: block; }
 
         /* BUTTONS */
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: var(--dark);
-            color: white;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            text-align: center;
-            text-decoration: none;
-        }
+        .btn { display: block; width: 100%; padding: 16px; background: var(--dark); color: white; border: none; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; text-align: center; text-decoration: none; }
         .btn:hover { opacity: 0.8; }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-outline { background: transparent; color: var(--dark); border: 1px solid var(--dark); margin-top: 10px; }
-        .btn-sm {
-            display: inline-block;
-            padding: 8px 16px;
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.2);
-            background: transparent;
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            transition: all 0.2s;
-        }
+        .btn-sm { display: inline-block; padding: 8px 16px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); background: transparent; font-family: 'Inter', sans-serif; color: var(--dark); transition: all 0.2s; }
         .btn-sm:hover { background: var(--dark); color: white; border-color: var(--dark); }
         .btn-danger { border-color: var(--red); color: var(--red); }
         .btn-danger:hover { background: var(--red); color: white; border-color: var(--red); }
@@ -125,29 +54,8 @@
         #mainScreen { align-items: flex-start; padding: 0; flex-direction: column; }
 
         /* TABS */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid rgba(0,0,0,0.07);
-            width: 100%;
-            padding: 0 28px;
-        }
-        .tab {
-            padding: 16px 0;
-            margin-right: 32px;
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            color: var(--mid);
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            background: none;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-            font-family: 'Inter', sans-serif;
-            transition: color 0.2s;
-        }
+        .tabs { display: flex; border-bottom: 1px solid rgba(0,0,0,0.07); width: 100%; padding: 0 28px; }
+        .tab { padding: 16px 0; margin-right: 32px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; color: var(--mid); border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; border-top: none; border-left: none; border-right: none; font-family: 'Inter', sans-serif; transition: color 0.2s; }
         .tab.active { color: var(--dark); border-bottom-color: var(--dark); }
 
         /* PANELS */
@@ -157,139 +65,81 @@
         .panel-sub { font-size: 13px; color: var(--mid); margin-bottom: 28px; }
 
         /* PHOTO PICKER */
-        .photo-picker {
-            border: 2px dashed rgba(0,0,0,0.14);
-            background: var(--beige);
-            aspect-ratio: 3/4;
-            max-height: 65vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            margin-bottom: 16px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.2s;
-            touch-action: none;
-            user-select: none;
-        }
+        .photo-picker { border: 2px dashed rgba(0,0,0,0.14); background: var(--beige); aspect-ratio: 3/4; max-height: 65vh; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 16px; position: relative; overflow: hidden; transition: border-color 0.2s; touch-action: none; user-select: none; }
         .photo-picker:hover { border-color: var(--accent); }
         .photo-picker.has-photo { border-style: solid; border-color: transparent; cursor: move; }
-        .photo-picker input[type="file"] {
-            position: absolute; inset: 0; opacity: 0; cursor: pointer;
-            width: 100%; height: 100%; margin: 0; padding: 0; border: none;
-        }
+        .photo-picker input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; margin: 0; padding: 0; border: none; }
         .photo-picker.has-photo input[type="file"] { pointer-events: none; }
         #photoPreview { position: absolute; display: none; }
         .picker-label { text-align: center; pointer-events: none; }
         .picker-icon { font-size: 44px; margin-bottom: 10px; }
         .picker-label p { font-size: 15px; color: var(--mid); margin-bottom: 4px; }
         .picker-label small { font-size: 12px; color: var(--mid); opacity: 0.6; }
-        .change-btn {
-            display: none;
-            position: absolute; bottom: 12px; right: 12px;
-            background: rgba(255,255,255,0.92); padding: 7px 16px;
-            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
-            cursor: pointer; border: none; font-family: 'Inter', sans-serif; z-index: 10;
-        }
+        .change-btn { display: none; position: absolute; bottom: 12px; right: 12px; background: rgba(255,255,255,0.92); padding: 7px 16px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border: none; font-family: 'Inter', sans-serif; z-index: 10; }
         .photo-picker.has-photo .change-btn { display: block; }
         .photo-picker.has-photo .picker-label { display: none; }
-        .crop-hint {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.45); color: white;
-            font-size: 12px; letter-spacing: 0.04em;
-            padding: 8px 12px; text-align: center; pointer-events: none;
-            display: none; z-index: 5;
-        }
+        .crop-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.45); color: white; font-size: 11px; letter-spacing: 0.03em; padding: 8px 12px; text-align: center; pointer-events: none; display: none; z-index: 5; }
         .photo-picker.has-photo .crop-hint { display: block; }
 
-        /* MANAGE LIST */
-        .save-order-bar {
-            display: none;
-            background: var(--beige);
-            padding: 14px 0;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .save-order-bar p { font-size: 13px; color: var(--mid); margin-bottom: 10px; }
+        /* PICKER ZOOM CONTROLS */
+        .picker-zoom { display: none; position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); padding: 7px 14px; border-radius: 24px; align-items: center; gap: 10px; z-index: 10; white-space: nowrap; pointer-events: auto; }
+        .photo-picker.has-photo .picker-zoom { display: flex; }
+        .pz-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; line-height: 1; padding: 0; width: 22px; text-align: center; pointer-events: auto; }
+        .pz-track { width: 72px; height: 3px; background: rgba(255,255,255,0.28); border-radius: 2px; }
+        .pz-fill { height: 100%; width: 0%; background: white; border-radius: 2px; transition: width 0.1s; }
 
+        /* MANAGE LIST */
+        .save-order-bar { display: none; background: var(--beige); padding: 14px 0; margin-bottom: 20px; text-align: center; }
+        .save-order-bar p { font-size: 13px; color: var(--mid); margin-bottom: 10px; }
         .manage-list { display: flex; flex-direction: column; gap: 12px; }
-        .manage-card {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: var(--beige);
-            padding: 12px;
-            cursor: default;
-        }
-        .drag-handle {
-            font-size: 20px;
-            color: var(--mid);
-            cursor: grab;
-            padding: 0 4px;
-            flex-shrink: 0;
-            user-select: none;
-        }
+        .manage-card { display: flex; align-items: center; gap: 14px; background: var(--beige); padding: 12px; cursor: default; }
+        .drag-handle { font-size: 20px; color: var(--mid); cursor: grab; padding: 0 4px; flex-shrink: 0; user-select: none; }
         .drag-handle:active { cursor: grabbing; }
-        .manage-thumb {
-            width: 72px;
-            height: 72px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
+        .manage-thumb { width: 72px; height: 72px; object-fit: cover; flex-shrink: 0; }
         .manage-info { flex: 1; min-width: 0; }
-        .manage-title-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            font-weight: 400;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .manage-title-text { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .manage-desc-text { font-size: 12px; color: var(--mid); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .manage-actions { display: flex; gap: 8px; margin-top: 8px; }
         .manage-empty { text-align: center; padding: 48px 0; color: var(--mid); font-size: 14px; }
 
         /* SETTINGS */
-        .setting-img-box { position: relative; width: 100%; overflow: hidden; background: var(--beige); margin-bottom: 10px; aspect-ratio: 16/9; }
-        .setting-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .img-change-btn {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(255,255,255,0.92); padding: 8px 14px;
-            font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
-            cursor: pointer; border: none; font-family: 'Inter', sans-serif;
-        }
-        .img-uploading { position: absolute; inset: 0; background: rgba(250,247,242,0.8); display: none; align-items: center; justify-content: center; }
-        .img-uploading.active { display: flex; }
+        .setting-img-slot { position: relative; width: 100%; overflow: hidden; background: var(--beige); margin-bottom: 10px; aspect-ratio: 1/1; cursor: pointer; }
+        .setting-img-slot img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        .setting-img-slot::after { content: 'Tap to change'; position: absolute; inset: 0; background: rgba(28,26,24,0); color: white; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .setting-img-slot:hover::after { background: rgba(28,26,24,0.35); }
         .save-row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
         .save-row .btn { width: auto; padding: 14px 28px; }
         .saved-msg { font-size: 13px; color: var(--accent); letter-spacing: 0.04em; opacity: 0; transition: opacity 0.3s; }
         .saved-msg.show { opacity: 1; }
 
         /* EDIT MODAL */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(28,26,24,0.5);
-            z-index: 300;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(28,26,24,0.5); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
         .modal-overlay.active { display: flex; }
-        .modal {
-            background: var(--warm-white);
-            width: 100%;
-            max-width: 460px;
-            padding: 36px 28px 28px;
-        }
+        .modal { background: var(--warm-white); width: 100%; max-width: 460px; padding: 36px 28px 28px; }
         .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 20px; }
         .modal-thumb { width: 100%; height: 180px; object-fit: cover; margin-bottom: 20px; }
         .modal-actions { display: flex; gap: 10px; margin-top: 8px; }
         .modal-actions .btn { margin: 0; }
+
+        /* SETTINGS CROP MODAL */
+        .sett-crop-modal { display: none; position: fixed; inset: 0; background: rgba(20,18,16,0.95); z-index: 500; flex-direction: column; align-items: center; justify-content: center; padding: 16px; }
+        .sett-crop-modal.active { display: flex; }
+        .sett-crop-inner { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 12px; }
+        .sett-crop-header { color: white; }
+        .sett-crop-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 2px; }
+        .sett-crop-hint { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
+        .sett-crop-frame { position: relative; overflow: hidden; background: #111; width: 100%; aspect-ratio: 1/1; touch-action: none; user-select: none; cursor: move; }
+        #settCropImg { position: absolute; display: block; }
+        .sett-zoom-row { display: flex; align-items: center; gap: 10px; }
+        .sz-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.12); border: none; color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .sz-btn:hover { background: rgba(255,255,255,0.22); }
+        .sz-track { flex: 1; height: 4px; background: rgba(255,255,255,0.18); border-radius: 2px; }
+        #settZoomFill { height: 100%; background: white; border-radius: 2px; width: 0%; transition: width 0.1s; }
+        .sz-label { font-size: 12px; color: rgba(255,255,255,0.45); width: 32px; text-align: right; flex-shrink: 0; }
+        .sett-crop-footer { display: flex; gap: 10px; justify-content: flex-end; }
+        .sett-crop-cancel { padding: 13px 22px; background: transparent; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.22); font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+        .sett-crop-confirm { padding: 13px 26px; background: white; color: var(--dark); border: none; font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+        .sett-crop-confirm:disabled { opacity: 0.45; cursor: not-allowed; }
 
         /* SUCCESS */
         .success-box { text-align: center; max-width: 340px; }
@@ -298,52 +148,16 @@
         .success-box p { font-size: 14px; color: var(--mid); margin-bottom: 28px; line-height: 1.7; }
 
         /* LOADING */
-        .loading-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(250,247,242,0.93);
-            justify-content: center; align-items: center;
-            flex-direction: column; z-index: 200;
-        }
+        .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(250,247,242,0.93); justify-content: center; align-items: center; flex-direction: column; z-index: 200; }
         .loading-overlay.active { display: flex; }
-        .spinner {
-            width: 38px; height: 38px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 16px;
-        }
-        .spinner-sm {
-            width: 24px; height: 24px;
-            border: 2px solid rgba(0,0,0,0.08);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 24px auto;
-        }
+        .spinner { width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+        .spinner-sm { width: 24px; height: 24px; border: 2px solid rgba(0,0,0,0.08); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 24px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-overlay p { font-size: 14px; color: var(--mid); }
 
-        .error-box {
-            display: none;
-            background: #fdf0ef;
-            border-left: 3px solid var(--red);
-            padding: 16px 18px;
-            margin-bottom: 16px;
-        }
-        .error-box .error-step {
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 6px;
-        }
-        .error-box .error-detail {
-            font-size: 13px;
-            color: var(--dark);
-            line-height: 1.6;
-            word-break: break-word;
-        }
+        .error-box { display: none; background: #fdf0ef; border-left: 3px solid var(--red); padding: 16px 18px; margin-bottom: 16px; }
+        .error-box .error-step { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+        .error-box .error-detail { font-size: 13px; color: var(--dark); line-height: 1.6; word-break: break-word; }
     </style>
 </head>
 <body>
@@ -370,6 +184,29 @@
             <div class="modal-actions">
                 <button class="btn" onclick="saveEdit()">Save</button>
                 <button class="btn btn-outline" onclick="closeModal()" style="width:auto; padding:16px 24px;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS CROP MODAL -->
+    <div class="sett-crop-modal" id="settCropModal">
+        <div class="sett-crop-inner">
+            <div class="sett-crop-header">
+                <p class="sett-crop-title">Position Header Photo</p>
+                <p class="sett-crop-hint">Drag to reposition · pinch or use ± to zoom</p>
+            </div>
+            <div class="sett-crop-frame" id="settCropFrame">
+                <img id="settCropImg" src="" alt="">
+            </div>
+            <div class="sett-zoom-row">
+                <button class="sz-btn" onclick="adjustSettZoom(-0.2)">−</button>
+                <div class="sz-track"><div id="settZoomFill"></div></div>
+                <button class="sz-btn" onclick="adjustSettZoom(0.2)">+</button>
+                <span class="sz-label" id="settZoomLabel">1×</span>
+            </div>
+            <div class="sett-crop-footer">
+                <button class="sett-crop-cancel" onclick="closeSettCropModal()">Cancel</button>
+                <button class="sett-crop-confirm" id="settCropConfirmBtn" onclick="confirmSettCrop()">Use This Photo</button>
             </div>
         </div>
     </div>
@@ -407,7 +244,12 @@
                     <p>Tap to choose a photo</p>
                     <small>Camera roll or take a new photo</small>
                 </div>
-                <div class="crop-hint">Drag to reposition · tap Change to swap photo</div>
+                <div class="picker-zoom">
+                    <button class="pz-btn" onclick="pickerZoom(-0.2, event)">−</button>
+                    <div class="pz-track"><div class="pz-fill" id="pickerZoomFill"></div></div>
+                    <button class="pz-btn" onclick="pickerZoom(0.2, event)">+</button>
+                </div>
+                <div class="crop-hint">Drag · pinch or ± to zoom · tap Change to swap</div>
                 <button class="change-btn" onclick="changePhoto(event)">Change Photo</button>
             </div>
 
@@ -447,11 +289,9 @@
             <p class="panel-title">My Page Settings</p>
             <p class="panel-sub">Update your header photo and bio text.</p>
 
-            <label class="field-label">Header Photo</label>
-            <div class="setting-img-box">
+            <label class="field-label">Header Photo <span style="opacity:0.5;font-size:10px;">(tap to change, drag &amp; zoom to position)</span></label>
+            <div class="setting-img-slot" onclick="openSettingsCrop()">
                 <img id="settingHeaderImg" src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=900&auto=format&fit=crop&q=80" alt="Header">
-                <div class="img-uploading" id="headerImgLoading"><div class="spinner-sm"></div></div>
-                <button class="img-change-btn" onclick="changeSettingImg('irina_header_image','settingHeaderImg','headerImgLoading')">Change Photo</button>
             </div>
 
             <label class="field-label" style="margin-top:20px;">Bio Text</label>
@@ -476,33 +316,30 @@
 
     <script>
         // ── Config ──────────────────────────────────────────────
-        const SUPABASE_URL        = 'https://sirvkycxyaiccsyzjoac.supabase.co';
-        const SUPABASE_ANON_KEY   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
-        const CLOUDINARY_CLOUD    = 'dbv9zhioi';
-        const CLOUDINARY_PRESET   = 'wongway';
-        const ADMIN_PASSWORD      = 'pottery2026';
-        const ARTIST              = 'irina';
+        const SUPABASE_URL      = 'https://sirvkycxyaiccsyzjoac.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
+        const CLOUDINARY_CLOUD  = 'dbv9zhioi';
+        const CLOUDINARY_PRESET = 'wongway';
+        const ADMIN_PASSWORD    = 'pottery2026';
+        const ARTIST            = 'irina';
         // ────────────────────────────────────────────────────────
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let selectedFile = null;
-        let cropX = 0, cropY = 0, imgScale = 1;
+        let cropX = 0, cropY = 0;
+        let imgBaseScale = 1, imgZoom = 1, imgScale = 1;
         let isDragging = false, dragStartX = 0, dragStartY = 0;
+        let pickerPinchDist = null;
         let editingId = null;
         let sortable = null;
         let orderChanged = false;
 
         function esc(str) {
-            return String(str || '')
-                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-                .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
 
         // PASSWORD
-        document.getElementById('passwordInput').addEventListener('keydown', e => {
-            if (e.key === 'Enter') checkPassword();
-        });
-
+        document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
         function checkPassword() {
             if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
                 showScreen('mainScreen');
@@ -541,27 +378,6 @@
             } catch(e) {}
         }
 
-        async function changeSettingImg(settingKey, previewId, loadingId) {
-            const input = document.createElement('input');
-            input.type = 'file'; input.accept = 'image/*';
-            input.onchange = async () => {
-                const file = input.files[0]; if (!file) return;
-                document.getElementById(loadingId).classList.add('active');
-                try {
-                    const fd = new FormData();
-                    fd.append('file', file, 'photo.jpg');
-                    fd.append('upload_preset', CLOUDINARY_PRESET);
-                    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
-                    const d = await res.json();
-                    if (!d.secure_url) throw new Error('Upload failed');
-                    await sb.from('settings').upsert({ key: settingKey, value: d.secure_url });
-                    document.getElementById(previewId).src = d.secure_url;
-                } catch(e) { alert('Could not upload. Try again.\n\n' + e.message); }
-                finally { document.getElementById(loadingId).classList.remove('active'); }
-            };
-            input.click();
-        }
-
         async function saveSettingText() {
             const bio = document.getElementById('settingBio').value.trim();
             try {
@@ -572,12 +388,12 @@
             } catch(e) { alert('Could not save. Try again.'); }
         }
 
-        // PHOTO PICKER
+        // ── GALLERY UPLOAD PHOTO PICKER ───────────────────────
+
         function previewPhoto(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const file = e.target.files[0]; if (!file) return;
             selectedFile = file;
-            cropX = 0; cropY = 0;
+            cropX = 0; cropY = 0; imgZoom = 1;
             const img = document.getElementById('photoPreview');
             img.onload = setupCrop;
             img.src = URL.createObjectURL(file);
@@ -588,41 +404,54 @@
         function setupCrop() {
             const img = document.getElementById('photoPreview');
             const picker = document.getElementById('photoPicker');
-            const cW = picker.offsetWidth;
-            const cH = picker.offsetHeight;
-            imgScale = Math.max(cW / img.naturalWidth, cH / img.naturalHeight);
+            const cW = picker.offsetWidth, cH = picker.offsetHeight;
+            imgBaseScale = Math.max(cW / img.naturalWidth, cH / img.naturalHeight);
+            imgZoom = 1; cropX = 0; cropY = 0;
+            applyPickerZoom();
+        }
+
+        function applyPickerZoom() {
+            imgScale = imgBaseScale * imgZoom;
+            const img = document.getElementById('photoPreview');
+            const picker = document.getElementById('photoPicker');
+            const cW = picker.offsetWidth, cH = picker.offsetHeight;
             const sW = Math.round(img.naturalWidth * imgScale);
             const sH = Math.round(img.naturalHeight * imgScale);
-            img.style.width = sW + 'px';
-            img.style.height = sH + 'px';
+            img.style.width = sW + 'px'; img.style.height = sH + 'px';
             img.style.left = Math.round((cW - sW) / 2) + 'px';
-            img.style.top = Math.round((cH - sH) / 2) + 'px';
-            img.style.transform = 'translate(0px, 0px)';
+            img.style.top  = Math.round((cH - sH) / 2) + 'px';
+            const maxX = Math.max(0, (sW - cW) / 2);
+            const maxY = Math.max(0, (sH - cH) / 2);
+            cropX = Math.max(-maxX, Math.min(maxX, cropX));
+            cropY = Math.max(-maxY, Math.min(maxY, cropY));
+            img.style.transform = `translate(${cropX}px,${cropY}px)`;
+            const pct = Math.round((imgZoom - 1) / 3 * 100);
+            document.getElementById('pickerZoomFill').style.width = pct + '%';
+        }
+
+        function pickerZoom(delta, e) {
+            if (e) { e.stopPropagation(); e.preventDefault(); }
+            imgZoom = Math.max(1, Math.min(4, imgZoom + delta));
+            applyPickerZoom();
         }
 
         function applyDrag(dx, dy) {
             const img = document.getElementById('photoPreview');
             const picker = document.getElementById('photoPicker');
-            const maxX = Math.max(0, (parseFloat(img.style.width) - picker.offsetWidth) / 2);
+            const maxX = Math.max(0, (parseFloat(img.style.width)  - picker.offsetWidth)  / 2);
             const maxY = Math.max(0, (parseFloat(img.style.height) - picker.offsetHeight) / 2);
             cropX = Math.max(-maxX, Math.min(maxX, dx));
             cropY = Math.max(-maxY, Math.min(maxY, dy));
-            img.style.transform = `translate(${cropX}px, ${cropY}px)`;
+            img.style.transform = `translate(${cropX}px,${cropY}px)`;
         }
 
-        function changePhoto(e) {
-            e.stopPropagation();
-            document.getElementById('fileInput').click();
-        }
+        function changePhoto(e) { e.stopPropagation(); document.getElementById('fileInput').click(); }
 
-        // Drag — mouse
+        // Gallery picker — mouse drag
         document.getElementById('photoPicker').addEventListener('mousedown', e => {
             if (!document.getElementById('photoPicker').classList.contains('has-photo')) return;
-            if (e.target.closest('.change-btn')) return;
-            isDragging = true;
-            dragStartX = e.clientX - cropX;
-            dragStartY = e.clientY - cropY;
-            e.preventDefault();
+            if (e.target.closest('.change-btn') || e.target.closest('.pz-btn')) return;
+            isDragging = true; dragStartX = e.clientX - cropX; dragStartY = e.clientY - cropY; e.preventDefault();
         });
         window.addEventListener('mousemove', e => {
             if (!isDragging) return;
@@ -630,36 +459,47 @@
         });
         window.addEventListener('mouseup', () => { isDragging = false; });
 
-        // Drag — touch
+        // Gallery picker — touch drag + pinch zoom
         document.getElementById('photoPicker').addEventListener('touchstart', e => {
             if (!document.getElementById('photoPicker').classList.contains('has-photo')) return;
-            if (e.target.closest('.change-btn')) return;
-            isDragging = true;
-            dragStartX = e.touches[0].clientX - cropX;
-            dragStartY = e.touches[0].clientY - cropY;
+            if (e.target.closest('.change-btn') || e.target.closest('.pz-btn')) return;
+            if (e.touches.length === 2) {
+                pickerPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                isDragging = false;
+            } else {
+                isDragging = true; dragStartX = e.touches[0].clientX - cropX; dragStartY = e.touches[0].clientY - cropY;
+            }
             e.preventDefault();
         }, { passive: false });
         window.addEventListener('touchmove', e => {
-            if (!isDragging) return;
-            applyDrag(e.touches[0].clientX - dragStartX, e.touches[0].clientY - dragStartY);
-            e.preventDefault();
+            if (document.getElementById('settCropModal').classList.contains('active')) return;
+            if (e.touches.length === 2 && pickerPinchDist !== null) {
+                const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                imgZoom = Math.max(1, Math.min(4, imgZoom + (d - pickerPinchDist) / 280));
+                pickerPinchDist = d;
+                applyPickerZoom();
+                e.preventDefault();
+            } else if (isDragging && e.touches.length === 1) {
+                applyDrag(e.touches[0].clientX - dragStartX, e.touches[0].clientY - dragStartY);
+                e.preventDefault();
+            }
         }, { passive: false });
-        window.addEventListener('touchend', () => { isDragging = false; });
+        window.addEventListener('touchend', e => {
+            if (e.touches.length < 2) pickerPinchDist = null;
+            if (e.touches.length === 0) isDragging = false;
+        });
 
         function getCroppedBlob() {
             return new Promise(resolve => {
                 const picker = document.getElementById('photoPicker');
                 const img = document.getElementById('photoPreview');
-                const cW = picker.offsetWidth;
-                const cH = picker.offsetHeight;
+                const cW = picker.offsetWidth, cH = picker.offsetHeight;
                 const sW = parseFloat(img.style.width) || cW;
                 const sH = parseFloat(img.style.height) || cH;
                 const imgLeft = (cW - sW) / 2 + cropX;
                 const imgTop  = (cH - sH) / 2 + cropY;
-                const srcX = -imgLeft / imgScale;
-                const srcY = -imgTop  / imgScale;
-                const srcW = cW / imgScale;
-                const srcH = cH / imgScale;
+                const srcX = -imgLeft / imgScale, srcY = -imgTop  / imgScale;
+                const srcW = cW / imgScale,       srcH = cH / imgScale;
                 const canvas = document.createElement('canvas');
                 canvas.width = 1200; canvas.height = 1600;
                 try {
@@ -684,54 +524,33 @@
 
         async function submitPost() {
             if (!selectedFile) { alert('Please choose a photo first.'); return; }
-
             document.getElementById('uploadError').style.display = 'none';
             const title = document.getElementById('titleInput').value.trim();
             const description = document.getElementById('descInput').value.trim();
-
             document.getElementById('loadingOverlay').classList.add('active');
             document.getElementById('submitBtn').disabled = true;
-
             try {
-                // Crop to frame, fall back to original if canvas unavailable
                 let uploadFile = await getCroppedBlob();
                 if (!uploadFile) uploadFile = selectedFile;
-
-                // Upload to Cloudinary
                 const formData = new FormData();
                 formData.append('file', uploadFile, 'photo.jpg');
                 formData.append('upload_preset', CLOUDINARY_PRESET);
-
                 let cloudRes;
                 try {
-                    cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
-                        method: 'POST',
-                        body: formData
-                    });
+                    cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: formData });
                 } catch (netErr) {
                     throw { step: 'Step 1 — Could not reach Cloudinary', message: netErr.message };
                 }
-
                 if (!cloudRes.ok) {
                     const body = await cloudRes.text();
                     throw { step: `Step 1 — Cloudinary rejected upload (HTTP ${cloudRes.status})`, message: body };
                 }
-
                 const cloudData = await cloudRes.json();
                 const imageUrl = cloudData.secure_url;
-
-                // Save to Supabase database
-                const { error: insertErr } = await sb.from('posts').insert({
-                    artist: ARTIST,
-                    title: title || '',
-                    description: description || '',
-                    image_url: imageUrl
-                });
+                const { error: insertErr } = await sb.from('posts').insert({ artist: ARTIST, title: title || '', description: description || '', image_url: imageUrl });
                 if (insertErr) throw { step: 'Step 2 — Saving to gallery', message: insertErr.message };
-
                 document.getElementById('loadingOverlay').classList.remove('active');
                 showScreen('successScreen');
-
             } catch (err) {
                 document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('submitBtn').disabled = false;
@@ -739,25 +558,171 @@
             }
         }
 
-        // MANAGE — LOAD
+        // ── SETTINGS CROP MODAL ───────────────────────────────
+
+        let settFile = null;
+        let settCropX = 0, settCropY = 0;
+        let settBaseScale = 1, settUserZoom = 1;
+        let settDragging = false, settDragStartX = 0, settDragStartY = 0;
+        let settPinchDist = null;
+
+        function openSettingsCrop() {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*';
+            input.onchange = () => {
+                const file = input.files[0]; if (!file) return;
+                settFile = file; settCropX = 0; settCropY = 0; settUserZoom = 1;
+                const img = document.getElementById('settCropImg');
+                img.onload = setupSettCrop;
+                img.src = URL.createObjectURL(file);
+                document.getElementById('settCropModal').classList.add('active');
+            };
+            input.click();
+        }
+
+        function setupSettCrop() {
+            const img = document.getElementById('settCropImg');
+            const frame = document.getElementById('settCropFrame');
+            const cW = frame.offsetWidth, cH = frame.offsetHeight;
+            settBaseScale = Math.max(cW / img.naturalWidth, cH / img.naturalHeight);
+            settUserZoom = 1; settCropX = 0; settCropY = 0;
+            applySettZoom();
+        }
+
+        function applySettZoom() {
+            const scale = settBaseScale * settUserZoom;
+            const img = document.getElementById('settCropImg');
+            const frame = document.getElementById('settCropFrame');
+            const cW = frame.offsetWidth, cH = frame.offsetHeight;
+            const sW = Math.round(img.naturalWidth * scale);
+            const sH = Math.round(img.naturalHeight * scale);
+            img.style.width = sW + 'px'; img.style.height = sH + 'px';
+            img.style.left = Math.round((cW - sW) / 2) + 'px';
+            img.style.top  = Math.round((cH - sH) / 2) + 'px';
+            const maxX = Math.max(0, (sW - cW) / 2);
+            const maxY = Math.max(0, (sH - cH) / 2);
+            settCropX = Math.max(-maxX, Math.min(maxX, settCropX));
+            settCropY = Math.max(-maxY, Math.min(maxY, settCropY));
+            img.style.transform = `translate(${settCropX}px,${settCropY}px)`;
+            const pct = Math.round((settUserZoom - 1) / 3 * 100);
+            document.getElementById('settZoomFill').style.width = pct + '%';
+            document.getElementById('settZoomLabel').textContent = settUserZoom.toFixed(1) + '×';
+        }
+
+        function adjustSettZoom(delta) {
+            settUserZoom = Math.max(1, Math.min(4, settUserZoom + delta));
+            applySettZoom();
+        }
+
+        function applySettDrag(dx, dy) {
+            const img = document.getElementById('settCropImg');
+            const frame = document.getElementById('settCropFrame');
+            const maxX = Math.max(0, (parseFloat(img.style.width)  - frame.offsetWidth)  / 2);
+            const maxY = Math.max(0, (parseFloat(img.style.height) - frame.offsetHeight) / 2);
+            settCropX = Math.max(-maxX, Math.min(maxX, dx));
+            settCropY = Math.max(-maxY, Math.min(maxY, dy));
+            img.style.transform = `translate(${settCropX}px,${settCropY}px)`;
+        }
+
+        document.getElementById('settCropFrame').addEventListener('mousedown', e => {
+            if (e.target.closest('.sz-btn')) return;
+            settDragging = true; settDragStartX = e.clientX - settCropX; settDragStartY = e.clientY - settCropY; e.preventDefault();
+        });
+        window.addEventListener('mousemove', e => { if (settDragging) applySettDrag(e.clientX - settDragStartX, e.clientY - settDragStartY); });
+        window.addEventListener('mouseup', () => { settDragging = false; });
+
+        document.getElementById('settCropFrame').addEventListener('touchstart', e => {
+            if (e.touches.length === 2) {
+                settPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                settDragging = false;
+            } else {
+                settDragging = true; settDragStartX = e.touches[0].clientX - settCropX; settDragStartY = e.touches[0].clientY - settCropY;
+            }
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchmove', e => {
+            if (!document.getElementById('settCropModal').classList.contains('active')) return;
+            if (e.touches.length === 2 && settPinchDist !== null) {
+                const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                settUserZoom = Math.max(1, Math.min(4, settUserZoom + (d - settPinchDist) / 280));
+                settPinchDist = d;
+                applySettZoom();
+                e.preventDefault();
+            } else if (settDragging && e.touches.length === 1) {
+                applySettDrag(e.touches[0].clientX - settDragStartX, e.touches[0].clientY - settDragStartY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+        window.addEventListener('touchend', e => {
+            if (e.touches.length < 2) settPinchDist = null;
+            if (e.touches.length === 0) settDragging = false;
+        });
+
+        function closeSettCropModal() {
+            document.getElementById('settCropModal').classList.remove('active');
+            settFile = null;
+        }
+
+        async function confirmSettCrop() {
+            const btn = document.getElementById('settCropConfirmBtn');
+            btn.disabled = true; btn.textContent = 'Uploading...';
+            try {
+                const blob = getSettCropBlob();
+                const uploadFile = blob || settFile;
+                const fd = new FormData();
+                fd.append('file', uploadFile, 'photo.jpg');
+                fd.append('upload_preset', CLOUDINARY_PRESET);
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, { method: 'POST', body: fd });
+                const d = await res.json();
+                if (!d.secure_url) throw new Error('Upload failed');
+                await sb.from('settings').upsert({ key: 'irina_header_image', value: d.secure_url });
+                document.getElementById('settingHeaderImg').src = d.secure_url;
+                closeSettCropModal();
+            } catch(e) {
+                alert('Could not upload. Try again.\n\n' + e.message);
+            } finally {
+                btn.disabled = false; btn.textContent = 'Use This Photo';
+            }
+        }
+
+        function getSettCropBlob() {
+            try {
+                const frame = document.getElementById('settCropFrame');
+                const img   = document.getElementById('settCropImg');
+                const scale = settBaseScale * settUserZoom;
+                const cW = frame.offsetWidth, cH = frame.offsetHeight;
+                const sW = parseFloat(img.style.width)  || cW;
+                const sH = parseFloat(img.style.height) || cH;
+                const imgLeft = (cW - sW) / 2 + settCropX;
+                const imgTop  = (cH - sH) / 2 + settCropY;
+                const srcX = -imgLeft / scale, srcY = -imgTop  / scale;
+                const srcW = cW / scale,       srcH = cH / scale;
+                const canvas = document.createElement('canvas');
+                canvas.width = 1400; canvas.height = 1400;
+                canvas.getContext('2d').drawImage(img, srcX, srcY, srcW, srcH, 0, 0, 1400, 1400);
+                const dataURL = canvas.toDataURL('image/jpeg', 0.9);
+                if (!dataURL || dataURL.length < 200) return null;
+                const bstr = atob(dataURL.split(',')[1]);
+                const u8 = new Uint8Array(bstr.length);
+                for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+                return new Blob([u8], { type: 'image/jpeg' });
+            } catch(e) { return null; }
+        }
+
+        // ── MANAGE ────────────────────────────────────────────
+
         async function loadManage() {
             const list = document.getElementById('manageList');
             list.innerHTML = '<div class="spinner-sm"></div>';
             orderChanged = false;
             document.getElementById('saveOrderBar').style.display = 'none';
-
             try {
-                const { data: posts, error } = await sb.from('posts')
-                    .select('*')
-                    .eq('artist', ARTIST)
-                    .order('order_index', { ascending: true });
+                const { data: posts, error } = await sb.from('posts').select('*').eq('artist', ARTIST).order('order_index', { ascending: true });
                 if (error) throw error;
-
                 if (!posts || posts.length === 0) {
                     list.innerHTML = '<div class="manage-empty">No pieces yet. Add one from the Upload tab.</div>';
                     return;
                 }
-
                 list.innerHTML = posts.map(p => `
                     <div class="manage-card" data-id="${esc(p.id)}" data-url="${esc(p.image_url)}">
                         <span class="drag-handle" title="Drag to reorder">⠿</span>
@@ -772,41 +737,27 @@
                         </div>
                     </div>
                 `).join('');
-
                 if (sortable) sortable.destroy();
                 sortable = new Sortable(list, {
-                    animation: 180,
-                    handle: '.drag-handle',
-                    onEnd: () => {
-                        orderChanged = true;
-                        document.getElementById('saveOrderBar').style.display = 'block';
-                    }
+                    animation: 180, handle: '.drag-handle',
+                    onEnd: () => { orderChanged = true; document.getElementById('saveOrderBar').style.display = 'block'; }
                 });
-
             } catch (err) {
                 list.innerHTML = '<div class="manage-empty">Could not load pieces.</div>';
             }
         }
 
-        // MANAGE — SAVE ORDER
         async function saveOrder() {
             const cards = document.querySelectorAll('.manage-card');
             const btn = document.querySelector('#saveOrderBar .btn');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
-
+            btn.disabled = true; btn.textContent = 'Saving...';
             const updates = Array.from(cards).map((card, i) => ({ id: card.dataset.id, order_index: i }));
-            for (const u of updates) {
-                await sb.from('posts').update({ order_index: u.order_index }).eq('id', u.id);
-            }
-
+            for (const u of updates) { await sb.from('posts').update({ order_index: u.order_index }).eq('id', u.id); }
             document.getElementById('saveOrderBar').style.display = 'none';
-            btn.disabled = false;
-            btn.textContent = 'Save New Order';
+            btn.disabled = false; btn.textContent = 'Save New Order';
             orderChanged = false;
         }
 
-        // MANAGE — EDIT
         function openEdit(id, imageUrl, title, description) {
             editingId = id;
             document.getElementById('editThumb').src = imageUrl;
@@ -815,52 +766,35 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('editModal').classList.remove('active');
-            editingId = null;
-        }
+        function closeModal() { document.getElementById('editModal').classList.remove('active'); editingId = null; }
 
         async function saveEdit() {
             const title = document.getElementById('editTitle').value.trim();
             const description = document.getElementById('editDesc').value.trim();
-
-            const { error } = await sb.from('posts')
-                .update({ title, description })
-                .eq('id', editingId);
-
+            const { error } = await sb.from('posts').update({ title, description }).eq('id', editingId);
             if (error) { alert('Could not save. Try again.'); return; }
-            closeModal();
-            loadManage();
+            closeModal(); loadManage();
         }
 
-        // MANAGE — DELETE
         async function deletePost(id) {
             if (!confirm('Delete this piece? This cannot be undone.')) return;
-
-            try {
-                await sb.from('posts').delete().eq('id', id);
-                loadManage();
-            } catch (err) {
-                alert('Could not delete. Try again.\n\n' + err.message);
-            }
+            try { await sb.from('posts').delete().eq('id', id); loadManage(); }
+            catch (err) { alert('Could not delete. Try again.\n\n' + err.message); }
         }
 
         // SUCCESS
         function addAnother() {
             selectedFile = null;
-            cropX = 0; cropY = 0;
+            cropX = 0; cropY = 0; imgZoom = 1; imgScale = 1;
             document.getElementById('fileInput').value = '';
             const prev = document.getElementById('photoPreview');
-            prev.style.display = 'none';
-            prev.style.transform = '';
-            prev.style.width = '';
-            prev.style.height = '';
+            prev.style.display = 'none'; prev.style.transform = ''; prev.style.width = ''; prev.style.height = '';
+            document.getElementById('pickerZoomFill').style.width = '0%';
             document.getElementById('photoPicker').classList.remove('has-photo');
             document.getElementById('titleInput').value = '';
             document.getElementById('descInput').value = '';
             document.getElementById('submitBtn').disabled = false;
-            showScreen('mainScreen');
-            switchTab('upload');
+            showScreen('mainScreen'); switchTab('upload');
         }
 
         function showScreen(id) {
