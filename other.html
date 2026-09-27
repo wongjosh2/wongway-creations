@@ -34,9 +34,22 @@
         .gallery-section h2 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 40px; }
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .gallery-card { background: var(--beige); }
-        .gallery-card-image { aspect-ratio: 3/4; overflow: hidden; }
+        .gallery-card-image { aspect-ratio: 3/4; overflow: hidden; cursor: zoom-in; }
         .gallery-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .gallery-card:hover .gallery-card-image img { transform: scale(1.04); }
+
+        /* LIGHTBOX */
+        .lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(15,13,11,0.96); z-index: 1000; align-items: center; justify-content: center; }
+        .lightbox-overlay.active { display: flex; }
+        .lightbox-overlay img { max-width: 90vw; max-height: 85vh; object-fit: contain; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: lightboxIn 0.25s ease; }
+        @keyframes lightboxIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+        .lightbox-close, .lightbox-prev, .lightbox-next { position: fixed; background: none; border: none; color: rgba(255,255,255,0.85); cursor: pointer; transition: color 0.2s; }
+        .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { color: #fff; }
+        .lightbox-close { top: 24px; right: 32px; font-size: 32px; line-height: 1; }
+        .lightbox-prev, .lightbox-next { top: 50%; transform: translateY(-50%); font-size: 40px; padding: 8px 16px; }
+        .lightbox-prev { left: 16px; }
+        .lightbox-next { right: 16px; }
+        .lightbox-caption { position: fixed; bottom: 28px; left: 0; right: 0; text-align: center; color: rgba(255,255,255,0.75); font-size: 13px; letter-spacing: 0.04em; padding: 0 80px; }
         .gallery-card-info { padding: 18px 20px 22px; }
         .gallery-card-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 6px; }
         .gallery-card-info p { font-size: 13px; color: var(--mid); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -62,6 +75,9 @@
             .gallery-section { padding: 52px 24px; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .back-bar { padding: 24px; }
+            .lightbox-prev, .lightbox-next { font-size: 28px; padding: 6px 10px; }
+            .lightbox-close { top: 14px; right: 18px; font-size: 26px; }
+            .lightbox-caption { padding: 0 50px; }
         }
     </style>
 </head>
@@ -107,6 +123,15 @@
         <a href="admin-other.html" style="display:inline-block;margin-top:10px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid);text-decoration:none;opacity:0.5;">✏ Edit This Page</a>
     </footer>
 
+    <!-- LIGHTBOX -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="if(event.target===this) closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+        <button class="lightbox-prev" id="lightboxPrev" onclick="showPrevImage(event)" aria-label="Previous">&#8249;</button>
+        <img id="lightboxImg" src="" alt="">
+        <button class="lightbox-next" id="lightboxNext" onclick="showNextImage(event)" aria-label="Next">&#8250;</button>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
     <script>
         const SUPABASE_URL      = 'https://sirvkycxyaiccsyzjoac.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpcnZreWN4eWFpY2NzeXpqb2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3Njc4ODUsImV4cCI6MjA5NjM0Mzg4NX0.J3-UBOPkjJRjQZKHRjqAyCAiaH66swJ3dJFeDrLOCqo';
@@ -115,6 +140,9 @@
         function esc(str) {
             return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
+
+        let galleryPosts = [];
+        let lightboxIndex = 0;
 
         async function loadGallery() {
             const grid = document.getElementById('galleryGrid');
@@ -129,9 +157,10 @@
                     grid.innerHTML = '<div class="gallery-empty">No pieces here yet — check back soon.</div>';
                     return;
                 }
-                grid.innerHTML = posts.map(p => `
+                galleryPosts = posts;
+                grid.innerHTML = posts.map((p, i) => `
                     <div class="gallery-card">
-                        <div class="gallery-card-image">
+                        <div class="gallery-card-image" onclick="openLightbox(${i})">
                             <img src="${esc(p.image_url)}" alt="${esc(p.title)}" loading="lazy">
                         </div>
                         <div class="gallery-card-info">
@@ -144,6 +173,43 @@
                 grid.innerHTML = '<div class="gallery-empty">Could not load gallery right now.</div>';
             }
         }
+
+        function updateLightbox() {
+            const p = galleryPosts[lightboxIndex];
+            if (!p) return;
+            document.getElementById('lightboxImg').src = p.image_url;
+            document.getElementById('lightboxImg').alt = p.title || '';
+            document.getElementById('lightboxCaption').textContent = p.title || '';
+            const multi = galleryPosts.length > 1;
+            document.getElementById('lightboxPrev').style.display = multi ? 'block' : 'none';
+            document.getElementById('lightboxNext').style.display = multi ? 'block' : 'none';
+        }
+        function openLightbox(index) {
+            lightboxIndex = index;
+            updateLightbox();
+            document.getElementById('lightboxOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightboxOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function showPrevImage(e) {
+            if (e) e.stopPropagation();
+            lightboxIndex = (lightboxIndex - 1 + galleryPosts.length) % galleryPosts.length;
+            updateLightbox();
+        }
+        function showNextImage(e) {
+            if (e) e.stopPropagation();
+            lightboxIndex = (lightboxIndex + 1) % galleryPosts.length;
+            updateLightbox();
+        }
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightboxOverlay').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showPrevImage();
+            if (e.key === 'ArrowRight') showNextImage();
+        });
 
         loadGallery();
 
